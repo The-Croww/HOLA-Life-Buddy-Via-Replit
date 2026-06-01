@@ -1,0 +1,70 @@
+HOLA! Life Buddy — Phase 4: Polish + Launch Prep
+
+FEATURE 1 — ENHANCED ONBOARDING (user app)
+Replace the current 3-slide carousel with a richer onboarding flow:
+
+Slide 1 — Welcome
+- Large HOLA! logo animation (fade in)
+- Title: "Your daily mental wellness companion"
+- Subtitle: "Track your mood, talk to HOLA Buddy, and grow every day"
+
+Slide 2 — For you
+- Illustration placeholder (use large emoji: 🌿)
+- Title: "Tools that actually help"
+- Subtitle: "Breathing exercises, guided journals, CBT tools, and an AI companion — all in one place"
+
+Slide 3 — Connected
+- Illustration: 🔗 emoji
+- Title: "Linked to your psychologist"
+- Subtitle: "Your progress is shared securely with your therapist — they're always in the loop"
+
+Slide 4 — Ready
+- Name input field: "What should we call you?"
+- Two buttons: "Create account" and "I already have an account"
+- Skips to registration/login respectively
+
+Progress dots at bottom, swipe gesture support, skip button top right.
+
+FEATURE 2 — ADMIN ONBOARDING (admin mobile app)
+Simple 2-slide onboarding for first-time psychologist login:
+
+Slide 1: "Welcome, Dr. [Name]" — your client dashboard is ready
+Slide 2: "Generate a link code" — share it with clients to connect
+
+Then goes straight to the client roster.
+
+FEATURE 3 — EMPTY STATES (all screens)
+Every screen that can be empty needs a proper empty state:
+- Clients list (admin): "No clients yet. Tap 'Add client' to generate a link code and share it with your first client."
+- Alerts (admin): "All clear. No risk alerts right now. The system checks every hour."
+- Messages (admin + user): "No messages yet. Say hello 👋"
+- Journal (user): "No entries yet. Writing even 2 sentences can help. ✍️"
+- Tasks (user home): "No tasks assigned yet. Your psychologist will send tasks here."
+- Progress (user): "Start logging your mood to see your progress here. 📊"
+
+Each empty state: centered layout, large emoji (48px), bold title, muted subtitle, optional CTA button.
+
+FEATURE 4 — MICRO-INTERACTIONS + ANIMATIONS
+Add these subtle animations throughout both apps:
+- Tab switch: 150ms fade transition between tab content
+- Card press: scale(0.98) on press with 100ms spring
+- Mood score selection: scale(1.15) bounce on selected pill
+- Achievement unlock: confetti burst (use react-native-confetti-cannon or simple emoji burst)
+- Streak increase: fire emoji animation plays for 1.5 seconds
+- Task completion: checkmark draws itself (stroke animation)
+- HOLA Buddy typing: animated 3-dot pulse (already done — verify it works)
+- Page transitions: slide in from right for detail screens, slide down for modals
+
+FEATURE 5 — ACCESSIBILITY
+- All touchable elements have minimum 44px hit area
+- Color is never the only indicator — always pair with text or icon
+- Screen reader labels on all icon-only buttons (accessibilityLabel prop)
+- Dynamic text size support (use sp units not px for font sizes)
+- High contrast mode: verify all text meets 4.5:1 contrast ratio
+- Loading states announced to screen readers (accessibilityLiveRegion)
+
+FEATURE 6 — APP ICONS + SPLASH SCREEN
+- App icon: green circle with white leaf/heart symbol, "H!" text — create as a simple SVG then export
+- Splash screen: white background, HOLA! logo centered, green accent bar at bottom
+- Update app.json with the new icon and splash for both mobile apps
+- Set bundle identifiers: com.holalifebuddy.user and com.holalifebuddy.admin

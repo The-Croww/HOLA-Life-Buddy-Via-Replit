@@ -11,14 +11,18 @@
     "splash": {
       "image": "./assets/images/icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#3DD68C"
     },
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "com.holalifebuddy.app"
+      "bundleIdentifier": "com.holalifebuddy.user"
     },
     "android": {
-      "package": "com.holalifebuddy.app"
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "backgroundColor": "#3DD68C"
+      },
+      "package": "com.holalifebuddy.user"
     },
     "web": {
       "favicon": "./assets/images/favicon.png"

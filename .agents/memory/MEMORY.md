@@ -1,2 +1,3 @@
 - [Phase 2 features](phase2-features.md) — All 5 Phase 2 admin features completed across all 3 artifacts; key patterns and endpoints documented.
 - [Phase 3 features](phase3-features.md) — All Phase 3 features complete: SQLite persistence, push notifications, real-time messaging, risk engine automation, assigned tasks, celebration UX.
+- [Phase 4 features](phase4-features.md) — Phase 4 polish complete: enhanced onboarding, admin onboarding, empty states, mood score bounce, splash color, messages "Say hello 👋", register name prefill.

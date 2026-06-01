@@ -104,7 +104,7 @@ export default function AdminMessagesScreen() {
             keyExtractor={(m) => m.id}
             contentContainerStyle={s.msgList}
             ListEmptyComponent={
-              <EmptyState emoji="✉️" title="No messages yet" subtitle="Start the conversation" />
+              <EmptyState emoji="👋" title="No messages yet" subtitle="Say hello to get the conversation started" />
             }
             renderItem={({ item }) => {
               const isMe = item.senderId === user?.id;

@@ -207,8 +207,12 @@ export default function MessagesScreen() {
           )}
           ListEmptyComponent={
             <View style={styles.emptyWrap}>
-              <Text style={{ color: colors.mutedForeground, fontSize: 14, textAlign: "center" }}>
-                No messages yet.{"\n"}Your psychologist will appear here.
+              <Text style={{ fontSize: 32, marginBottom: 8 }}>👋</Text>
+              <Text style={{ color: colors.foreground, fontSize: 15, fontFamily: "Inter_600SemiBold", textAlign: "center", marginBottom: 4 }}>
+                No messages yet
+              </Text>
+              <Text style={{ color: colors.mutedForeground, fontSize: 14, textAlign: "center", lineHeight: 20 }}>
+                Say hello — your psychologist will see your message here.
               </Text>
             </View>
           }

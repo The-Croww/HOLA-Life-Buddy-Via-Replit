@@ -97,7 +97,15 @@ export default function JournalScreen() {
           <View style={s.empty}>
             <Text style={s.emptyEmoji}>✍️</Text>
             <Text style={[s.emptyTitle, { color: colors.foreground }]}>No entries yet</Text>
-            <Text style={[s.emptySub, { color: colors.mutedForeground }]}>Start writing — it helps.</Text>
+            <Text style={[s.emptySub, { color: colors.mutedForeground }]}>Writing even 2 sentences can help. ✍️</Text>
+          <TouchableOpacity
+            style={[s.emptyBtn, { backgroundColor: colors.foreground }]}
+            onPress={() => setShowNew(true)}
+            activeOpacity={0.82}
+            accessibilityLabel="Write your first journal entry"
+          >
+            <Text style={[s.emptyBtnText, { color: colors.background }]}>Write your first entry</Text>
+          </TouchableOpacity>
           </View>
         ) : (
           entries.map((entry) => (
@@ -281,7 +289,9 @@ const s = StyleSheet.create({
   empty: { alignItems: "center", paddingVertical: 60, gap: 10 },
   emptyEmoji: { fontSize: 40 },
   emptyTitle: { fontSize: 17, fontFamily: "Inter_600SemiBold" },
-  emptySub: { fontSize: 14, fontFamily: "Inter_400Regular" },
+  emptySub: { fontSize: 14, fontFamily: "Inter_400Regular", textAlign: "center" },
+  emptyBtn: { marginTop: 6, paddingVertical: 13, paddingHorizontal: 28, borderRadius: 10, minHeight: 46, justifyContent: "center", alignItems: "center" },
+  emptyBtnText: { fontSize: 14, fontFamily: "Inter_600SemiBold" },
   card: { borderRadius: 12, borderWidth: 1, padding: 16, gap: 10 },
   cardTop: { flexDirection: "row", alignItems: "flex-start", gap: 10 },
   cardTitle: { fontSize: 15, fontFamily: "Inter_600SemiBold", marginBottom: 2 },

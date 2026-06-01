@@ -402,12 +402,20 @@ export default function HomeScreen() {
         )}
 
         {/* Assigned tasks */}
-        {pendingTasks.length > 0 && (
-          <View style={styles.section}>
-            <Text style={[styles.sectionTitle, { color: colors.foreground }]}>
-              My tasks
-            </Text>
-            {pendingTasks.map((task) => (
+        <View style={styles.section}>
+          <Text style={[styles.sectionTitle, { color: colors.foreground }]}>
+            My tasks
+          </Text>
+          {pendingTasks.length === 0 && (
+            <View style={[styles.emptyTasksCard, { backgroundColor: colors.card, borderColor: colors.border }]}>
+              <Text style={styles.emptyTasksEmoji}>📋</Text>
+              <Text style={[styles.emptyTasksTitle, { color: colors.foreground }]}>No tasks assigned yet</Text>
+              <Text style={[styles.emptyTasksSub, { color: colors.mutedForeground }]}>
+                Your psychologist will send tasks here.
+              </Text>
+            </View>
+          )}
+          {pendingTasks.length > 0 && pendingTasks.map((task) => (
               <View
                 key={task.id}
                 style={[
@@ -498,7 +506,6 @@ export default function HomeScreen() {
               </View>
             ))}
           </View>
-        )}
 
         {/* Quick access */}
         <View style={styles.section}>
@@ -704,4 +711,14 @@ const styles = StyleSheet.create({
     fontFamily: "Inter_700Bold",
     color: "#3DD68C",
   },
+  emptyTasksCard: {
+    borderRadius: 12,
+    borderWidth: 1,
+    padding: 20,
+    alignItems: "center",
+    gap: 6,
+  },
+  emptyTasksEmoji: { fontSize: 32 },
+  emptyTasksTitle: { fontSize: 15, fontFamily: "Inter_600SemiBold", textAlign: "center" },
+  emptyTasksSub: { fontSize: 13, fontFamily: "Inter_400Regular", textAlign: "center", lineHeight: 20 },
 });

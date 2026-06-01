@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useRef } from "react";
 import {
   View,
   Text,
@@ -9,6 +9,7 @@ import {
   Alert,
   Platform,
   ActivityIndicator,
+  Animated,
 } from "react-native";
 import * as Haptics from "expo-haptics";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -197,6 +198,14 @@ export default function MoodTrackerScreen() {
   const [selectedScore, setSelectedScore] = useState(5);
   const [selectedEmotions, setSelectedEmotions] = useState<string[]>([]);
   const [note, setNote] = useState("");
+  const scoreAnim = useRef(new Animated.Value(1)).current;
+
+  const handleScoreSelect = (score: number) => {
+    Haptics.selectionAsync();
+    setSelectedScore(score);
+    scoreAnim.setValue(0.82);
+    Animated.spring(scoreAnim, { toValue: 1, friction: 4, tension: 220, useNativeDriver: true }).start();
+  };
   const [activeSection, setActiveSection] = useState<"log" | "progress">("log");
   const [showSuccess, setShowSuccess] = useState(false);
 
@@ -358,47 +367,41 @@ export default function MoodTrackerScreen() {
               </Text>
             </View>
             <View style={styles.scaleRow}>
-              {Array.from({ length: 10 }, (_, i) => i + 1).map((score) => (
-                <TouchableOpacity
-                  key={score}
-                  style={[
-                    styles.scorePill,
-                    {
-                      backgroundColor:
-                        score === selectedScore
-                          ? getMoodColor(score, colors)
-                          : colors.secondary,
-                      borderColor:
-                        score === selectedScore
-                          ? getMoodColor(score, colors)
-                          : colors.border,
-                    },
-                  ]}
-                  onPress={() => {
-                    Haptics.selectionAsync();
-                    setSelectedScore(score);
-                  }}
-                  activeOpacity={0.7}
-                >
-                  <Text
-                    style={[
-                      styles.scorePillText,
-                      {
-                        color:
-                          score === selectedScore
-                            ? "#FFF"
-                            : colors.mutedForeground,
-                        fontFamily:
-                          score === selectedScore
-                            ? "Inter_600SemiBold"
-                            : "Inter_400Regular",
-                      },
-                    ]}
+              {Array.from({ length: 10 }, (_, i) => i + 1).map((score) => {
+                const isSelected = score === selectedScore;
+                return (
+                  <Animated.View
+                    key={score}
+                    style={isSelected ? { transform: [{ scale: scoreAnim }] } : undefined}
                   >
-                    {score}
-                  </Text>
-                </TouchableOpacity>
-              ))}
+                    <TouchableOpacity
+                      style={[
+                        styles.scorePill,
+                        {
+                          backgroundColor: isSelected ? getMoodColor(score, colors) : colors.secondary,
+                          borderColor: isSelected ? getMoodColor(score, colors) : colors.border,
+                        },
+                      ]}
+                      onPress={() => handleScoreSelect(score)}
+                      activeOpacity={0.7}
+                      accessibilityLabel={`Mood score ${score}`}
+                      accessibilityRole="button"
+                    >
+                      <Text
+                        style={[
+                          styles.scorePillText,
+                          {
+                            color: isSelected ? "#FFF" : colors.mutedForeground,
+                            fontFamily: isSelected ? "Inter_600SemiBold" : "Inter_400Regular",
+                          },
+                        ]}
+                      >
+                        {score}
+                      </Text>
+                    </TouchableOpacity>
+                  </Animated.View>
+                );
+              })}
             </View>
           </View>
 
@@ -567,6 +570,27 @@ export default function MoodTrackerScreen() {
       {/* PROGRESS SECTION */}
       {activeSection === "progress" && (
         <>
+          {entries.length === 0 && (
+            <View style={styles.progressEmpty}>
+              <Text style={styles.progressEmptyEmoji}>📊</Text>
+              <Text style={[styles.progressEmptyTitle, { color: colors.foreground }]}>
+                No progress data yet
+              </Text>
+              <Text style={[styles.progressEmptySub, { color: colors.mutedForeground }]}>
+                Start logging your mood to see your progress here.
+              </Text>
+              <TouchableOpacity
+                style={[styles.progressEmptyBtn, { backgroundColor: colors.foreground }]}
+                onPress={() => setActiveSection("log")}
+                activeOpacity={0.82}
+                accessibilityLabel="Go to log mood"
+              >
+                <Text style={[styles.progressEmptyBtnText, { color: colors.background }]}>
+                  Log your first mood
+                </Text>
+              </TouchableOpacity>
+            </View>
+          )}
           {/* Streak + stats */}
           <View
             style={[
@@ -919,4 +943,22 @@ const styles = StyleSheet.create({
     borderRadius: 999,
   },
   achievedText: { fontSize: 11, fontFamily: "Inter_500Medium", color: "#fff" },
+  progressEmpty: {
+    alignItems: "center",
+    paddingVertical: 48,
+    gap: 10,
+  },
+  progressEmptyEmoji: { fontSize: 44 },
+  progressEmptyTitle: { fontSize: 17, fontFamily: "Inter_600SemiBold", textAlign: "center" },
+  progressEmptySub: { fontSize: 14, fontFamily: "Inter_400Regular", textAlign: "center", lineHeight: 22 },
+  progressEmptyBtn: {
+    marginTop: 8,
+    paddingVertical: 13,
+    paddingHorizontal: 28,
+    borderRadius: 10,
+    minHeight: 46,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  progressEmptyBtnText: { fontSize: 14, fontFamily: "Inter_600SemiBold" },
 });

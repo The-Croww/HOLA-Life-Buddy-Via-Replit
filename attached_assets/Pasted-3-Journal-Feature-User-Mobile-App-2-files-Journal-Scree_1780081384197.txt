@@ -1,0 +1,65 @@
+3
+Journal Feature — User Mobile App
+~2 files
+📓
+Journal Screen
+A new tab or screen where users write daily journal entries. Each entry has a title, body text, and is linked to their current mood score. Users can browse past entries by date.
+Mobile
+🤖
+AI-Generated Journal Prompts
+When a user opens a new entry, HOLA Buddy generates a personalized prompt based on their current mood (e.g. if mood is low → "What's one small thing that went okay today?"). Powered by Groq.
+AI · Groq Mobile
+🔒
+Privacy Toggle Per Entry
+Each journal entry has a toggle: "Share with my psychologist". If on, the entry appears in the clinician dashboard. If off, it stays private forever.
+Mobile Backend
+🗄️
+Journal Backend Endpoints
+New API routes: POST /v1/journal (create entry), GET /v1/journal (list entries), DELETE /v1/journal/:id. Stored in the database with userId, content, moodScore, isShared, createdAt.
+Backend
+4
+Psychologist Web Dashboard
+~8 screens
+🔐
+Psychologist Auth
+Separate login page for psychologists. Same backend auth but role = "psychologist". Redirects to the dashboard on login. Built with React + Vite in the web-admin folder.
+Web
+📋
+Client Roster Dashboard
+Main page showing all linked clients in a table/list. Each row shows: name, last check-in date, 7-day mood sparkline, risk badge (green/yellow/red), and a View button.
+Web
+👤
+Client Profile Page
+Deep dive into one client: 30-day mood chart, emotion breakdown, shared journal entries, session notes (private), assigned tasks log, and a messaging button.
+Web
+📤
+Assign Tasks to Clients
+Psychologist picks a task type (breathing, journal prompt, meditation, CBT worksheet, custom message), sets a due date, and assigns it. User sees it on their Home screen.
+Web Backend
+🚨
+Risk Alerts Panel
+Auto-triggered alerts: mood below 3 for 3 days, no check-in for 5 days, overdue tasks. Psychologist sees a notification badge and can mark alerts as reviewed.
+Web Backend
+💬
+Secure Messaging
+Real-time chat between psychologist and client (not AI — actual clinician messages). Threads-style bubbles. Built with Socket.io. Clinician sends from web, user receives in mobile app.
+Web Mobile Backend
+📈
+Analytics Overview
+Practice-wide stats: total clients, avg mood across all clients this week, most-used app features, engagement rate. Bar charts and line graphs using Recharts.
+Web
+5
+Connect User App ↔ Dashboard
+~4 backend routes
+🔗
+Client Linking System
+Psychologist generates a unique link code. User enters it in Profile screen. This links their accounts and enables data sharing. Backend stores the relationship in Client_Assignments table.
+Backend Mobile Web
+📡
+Real-time Risk Alert Engine
+A background job that runs every hour: checks all users' mood patterns, flags distress, and pushes alerts to the linked psychologist's dashboard instantly via Socket.io.
+Backend Auto
+📬
+Assigned Tasks on Home Screen
+When a psychologist assigns a task, it appears as a card on the user's Home screen with a "Complete" button. Completion is logged back to the dashboard.
+Mobile Backend

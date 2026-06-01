@@ -1,0 +1,66 @@
+HOLA! Life Buddy — Phase 1: New User Features
+
+Add these new features to the USER mobile app at artifacts/mobile-user/
+
+FEATURE 1 — JOURNAL SCREEN
+Create app/(tabs)/journal.tsx with:
+- Tab icon: book emoji or Feather "book-open" icon
+- Header: "My Journal" with a "+ New entry" button
+- Entry list: scrollable cards showing title, date, mood tag emoji, first 2 lines of body, privacy badge (shared/private)
+- New entry flow:
+  * Full-screen modal with title input, body textarea (multiline)
+  * Mood tag selector: happy/calm/anxious/sad/grateful/tired (emoji pills)
+  * "Share with my psychologist" toggle (default off)
+  * AI prompt button: tapping generates a journaling prompt based on today's mood using Groq API
+  * Save button posts to /api/v1/journal
+- Empty state: "No entries yet. Start writing — it helps. ✍️"
+- Backend: add POST /api/v1/journal, GET /api/v1/journal, DELETE /api/v1/journal/:id to api-server
+
+FEATURE 2 — INTERACTIVE CBT TOOLS (replace "coming soon" in Mindfulness tools tab)
+Build each tool as a full interactive screen:
+
+Tool A — Worry Box
+- User types a worry into a text field
+- Taps "Lock it away" → worry animates into a box with a satisfying close animation
+- Stored locally in AsyncStorage
+- Can view/delete locked worries
+
+Tool B — Gratitude Jar
+- User writes one thing they're grateful for
+- Taps "Add to jar" → item drops into an animated jar (SVG or emoji)
+- Shows count: "You have X things to be grateful for"
+- Stored locally, list view available
+
+Tool C — Thought Reframe (CBT)
+- 3-step flow: 1) Write the negative thought, 2) Identify the cognitive distortion (tap from list: catastrophizing, mind reading, all-or-nothing, etc.), 3) Write a reframed thought
+- AI assists step 3: "Help me reframe" sends the thought to Groq and suggests a balanced alternative
+- Saves completed reframes to history
+
+Tool D — 5-4-3-2-1 Grounding
+- Guided interactive exercise: tap to reveal each sense category
+- 5 things you can SEE → 4 HEAR → 3 TOUCH → 2 SMELL → 1 TASTE
+- Each has a text input for the user to fill in
+- Progress bar across top, completion celebration at end
+
+FEATURE 3 — STREAK & ACHIEVEMENT SYSTEM
+Enhance the Progress tab:
+- Daily streak with fire animation when streak increases
+- Weekly goal: set a target (e.g. "log mood 5 days this week") — progress ring
+- Achievement badges that unlock:
+  * First Log (1 mood entry)
+  * Week Warrior (7-day streak)
+  * Mindful (complete 5 breathing sessions)
+  * Open Book (write 3 journal entries)  
+  * Connected (link with a psychologist)
+  * 30-Day Legend (30-day streak)
+- Badge grid with locked (grayed out) and unlocked (colored) states
+- Notification when a badge unlocks: in-app toast
+
+FEATURE 4 — DAILY CHECK-IN REMINDER CARD
+On the Home screen, if the user has NOT logged their mood today:
+- Show a prominent "How are you feeling today?" card with 5 emoji tap-to-log shortcut
+- Tapping an emoji logs that mood score quickly and dismisses the card
+- If mood already logged today: replace with a positive affirmation card showing today's mood
+
+Add these to the tab bar: Journal tab between Mood and Buddy tabs.
+Update _layout.tsx for both NativeTabLayout and ClassicTabLayout.

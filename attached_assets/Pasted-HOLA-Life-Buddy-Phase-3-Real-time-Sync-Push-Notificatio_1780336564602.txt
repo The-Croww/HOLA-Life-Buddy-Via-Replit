@@ -1,0 +1,61 @@
+HOLA! Life Buddy — Phase 3: Real-time Sync + Push Notifications
+
+FEATURE 1 — REAL-TIME MESSAGING (complete the loop)
+The web admin can already send messages. Now complete the user side:
+- User mobile app: messages.tsx should poll /api/v1/messages?clientId=me every 10 seconds for new messages (polling is fine for MVP, no need for Socket.io on mobile)
+- Show unread badge count on the Profile tab icon when there are unread messages
+- Push notification when psychologist sends a message (see push notifications below)
+- Message status: sent / delivered / read (update read status when user opens the conversation)
+- Backend: add GET /api/v1/messages/me endpoint that returns messages for the logged-in user
+
+FEATURE 2 — ASSIGNED TASKS ON HOME SCREEN
+When a psychologist assigns a task to a client, the client must see it:
+- Home screen: show a "From your psychologist" card if there are incomplete assigned tasks
+- Card shows task title, description, due date, and a "Mark complete" button
+- Tapping "Mark complete" calls PATCH /api/v1/tasks/:id/complete
+- After completing, show a brief celebration animation and the card disappears
+- Backend: GET /api/v1/tasks/assigned (returns tasks assigned to the logged-in user), PATCH /api/v1/tasks/:id/complete
+
+FEATURE 3 — PUSH NOTIFICATIONS (Expo Push)
+Implement push notifications using Expo Push Notifications:
+
+Setup:
+- Install expo-notifications in mobile-user and mobile-admin
+- On app launch, request notification permission and save the Expo push token to backend: POST /api/v1/users/push-token
+- Backend stores push tokens per user in the in-memory store
+
+Trigger notifications for:
+User app:
+- Daily mood check-in reminder at 8:00 PM (if no mood logged today)
+- New message from psychologist
+- New task assigned by psychologist
+- Achievement badge unlocked
+
+Admin app:
+- New risk alert triggered
+- Client completed an assigned task
+- New message from client
+
+Backend push sender:
+- Create a pushNotification service that calls Expo's push API: https://exp.host/--/api/v2/push/send
+- Trigger from relevant routes (task completion, message sent, alert triggered)
+
+FEATURE 4 — RISK ALERT ENGINE (automated)
+Backend cron job that runs every hour:
+- Check all users' mood entries from the last 3 days
+- Trigger alert to linked psychologist if:
+  * Mood score below 3 for 3 consecutive days
+  * No mood entry for 5+ days
+  * Assigned task is 3+ days overdue
+- Store alert in backend, emit via Socket.io to psychologist's web dashboard
+- Send push notification to admin mobile app
+- Backend: create src/services/alertEngine.ts with a setInterval that runs every hour
+
+FEATURE 5 — DATA PERSISTENCE (replace in-memory store)
+The current backend uses in-memory storage that resets on restart. Migrate to persistent storage:
+- Install better-sqlite3 (works in Replit without external DB)
+- Create src/lib/db.ts with SQLite setup
+- Migrate these tables: users, mood_entries, chat_messages, journal_entries, tasks, alerts, appointments, notes, goals, link_codes, messages, push_tokens
+- Keep all existing API endpoints working — just swap the store for DB calls
+- Add database file to .gitignore
+- Seed the DB with the existing seed user (alex@example.com / password123) and a psychologist (dr@clinic.com / password123)

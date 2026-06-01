@@ -1,0 +1,951 @@
+openapi: 3.1.0
+info:
+  # Do not change the title, if the title changes, the import paths will be broken
+  title: Api
+  version: 0.1.0
+  description: HOLA! Life Buddy API
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: auth
+    description: Authentication
+  - name: mood
+    description: Mood tracking
+  - name: user
+    description: User profile
+  - name: linking
+    description: Client-psychologist linking
+  - name: tasks
+    description: Assigned tasks
+  - name: journal
+    description: Journal entries
+  - name: psychologist
+    description: Psychologist portal
+
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+
+  /v1/auth/register:
+    post:
+      operationId: register
+      tags: [auth]
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterRequest"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /v1/auth/login:
+    post:
+      operationId: login
+      tags: [auth]
+      summary: Log in
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /v1/users/me:
+    get:
+      operationId: getMe
+      tags: [user]
+      summary: Get current user profile
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /v1/users/link:
+    post:
+      operationId: linkToPsychologist
+      tags: [linking]
+      summary: Link user to a psychologist using a code
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LinkRequest"
+      responses:
+        "200":
+          description: Linked successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LinkResult"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Invalid or expired code
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /v1/mood:
+    get:
+      operationId: getMoodEntries
+      tags: [mood]
+      summary: Get mood entries for current user
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 30
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            default: 0
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MoodEntriesResponse"
+    post:
+      operationId: createMoodEntry
+      tags: [mood]
+      summary: Log a mood entry
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateMoodEntryRequest"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MoodEntry"
+
+  /v1/mood/today:
+    get:
+      operationId: getTodayMood
+      tags: [mood]
+      summary: Get today's mood entry for current user
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MoodEntryOrNull"
+
+  /v1/affirmation:
+    get:
+      operationId: getDailyAffirmation
+      tags: [user]
+      summary: Get today's daily affirmation
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AffirmationResponse"
+
+  /v1/tasks:
+    get:
+      operationId: getMyTasks
+      tags: [tasks]
+      summary: Get tasks assigned to current user
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TasksResponse"
+
+  /v1/tasks/{taskId}/complete:
+    patch:
+      operationId: completeTask
+      tags: [tasks]
+      summary: Mark a task as completed
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: taskId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Task"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /v1/journal:
+    get:
+      operationId: getJournalEntries
+      tags: [journal]
+      summary: Get journal entries for current user
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JournalEntriesResponse"
+    post:
+      operationId: createJournalEntry
+      tags: [journal]
+      summary: Create a journal entry
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateJournalEntryRequest"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JournalEntry"
+
+  /v1/journal/prompt:
+    get:
+      operationId: getJournalPrompt
+      tags: [journal]
+      summary: Get an AI-generated journal prompt based on mood
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: mood
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JournalPromptResponse"
+
+  /v1/journal/{entryId}:
+    patch:
+      operationId: updateJournalEntry
+      tags: [journal]
+      summary: Update a journal entry (e.g. toggle sharing)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: entryId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateJournalEntryRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JournalEntry"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      operationId: deleteJournalEntry
+      tags: [journal]
+      summary: Delete a journal entry
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: entryId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Deleted
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /v1/psychologist/link-code:
+    post:
+      operationId: generateLinkCode
+      tags: [psychologist]
+      summary: Generate a link code for a new client
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LinkCode"
+
+  /v1/psychologist/clients:
+    get:
+      operationId: getMyClients
+      tags: [psychologist]
+      summary: Get all assigned clients with mood summaries
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientSummariesResponse"
+
+  /v1/psychologist/clients/{clientId}/journal:
+    get:
+      operationId: getClientJournal
+      tags: [psychologist]
+      summary: Get shared journal entries for a specific client
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: clientId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JournalEntriesResponse"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /v1/psychologist/clients/{clientId}/mood:
+    get:
+      operationId: getClientMood
+      tags: [psychologist]
+      summary: Get mood entries for a specific client
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: clientId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MoodEntriesResponse"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /v1/psychologist/clients/{clientId}/tasks:
+    post:
+      operationId: assignTask
+      tags: [psychologist]
+      summary: Assign a task to a client
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: clientId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TaskInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Task"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    get:
+      operationId: getClientTasks
+      tags: [psychologist]
+      summary: Get tasks assigned to a client
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: clientId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TasksResponse"
+
+  /v1/psychologist/alerts:
+    get:
+      operationId: getAlerts
+      tags: [psychologist]
+      summary: Get risk alerts for the psychologist
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AlertsResponse"
+
+  /v1/psychologist/alerts/{alertId}/review:
+    patch:
+      operationId: reviewAlert
+      tags: [psychologist]
+      summary: Mark an alert as reviewed
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: alertId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RiskAlert"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error
+
+    RegisterRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          minLength: 6
+      required:
+        - name
+        - email
+        - password
+
+    LoginRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+      required:
+        - email
+        - password
+
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+        role:
+          type: string
+          enum: [user, psychologist, admin]
+        avatar:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - name
+        - email
+        - role
+        - createdAt
+
+    AuthResponse:
+      type: object
+      properties:
+        token:
+          type: string
+        user:
+          $ref: "#/components/schemas/User"
+      required:
+        - token
+        - user
+
+    LinkRequest:
+      type: object
+      properties:
+        code:
+          type: string
+      required:
+        - code
+
+    LinkResult:
+      type: object
+      properties:
+        psychologistName:
+          type: string
+        psychologistId:
+          type: string
+      required:
+        - psychologistName
+        - psychologistId
+
+    LinkCode:
+      type: object
+      properties:
+        code:
+          type: string
+        expiresAt:
+          type: string
+          format: date-time
+      required:
+        - code
+        - expiresAt
+
+    MoodEntry:
+      type: object
+      properties:
+        id:
+          type: string
+        userId:
+          type: string
+        moodScore:
+          type: integer
+          minimum: 1
+          maximum: 10
+        emotions:
+          type: array
+          items:
+            type: string
+        note:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - userId
+        - moodScore
+        - emotions
+        - createdAt
+
+    MoodEntryOrNull:
+      type: object
+      properties:
+        entry:
+          allOf:
+            - $ref: "#/components/schemas/MoodEntry"
+          nullable: true
+      required:
+        - entry
+
+    MoodEntriesResponse:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: "#/components/schemas/MoodEntry"
+        total:
+          type: integer
+      required:
+        - entries
+        - total
+
+    CreateMoodEntryRequest:
+      type: object
+      properties:
+        moodScore:
+          type: integer
+          minimum: 1
+          maximum: 10
+        emotions:
+          type: array
+          items:
+            type: string
+        note:
+          type: ["string", "null"]
+      required:
+        - moodScore
+        - emotions
+
+    AffirmationResponse:
+      type: object
+      properties:
+        text:
+          type: string
+        date:
+          type: string
+      required:
+        - text
+        - date
+
+    Task:
+      type: object
+      properties:
+        id:
+          type: string
+        userId:
+          type: string
+        psychologistId:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        dueDate:
+          type: ["string", "null"]
+        completedAt:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - userId
+        - psychologistId
+        - title
+        - description
+        - createdAt
+
+    TaskInput:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        dueDate:
+          type: ["string", "null"]
+      required:
+        - title
+
+    TasksResponse:
+      type: object
+      properties:
+        tasks:
+          type: array
+          items:
+            $ref: "#/components/schemas/Task"
+      required:
+        - tasks
+
+    ClientSummary:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+        lastCheckin:
+          type: string
+        avgMood:
+          type: number
+        trend:
+          type: string
+          enum: [up, down, neutral]
+        risk:
+          type: string
+          enum: [high, medium, low]
+        streak:
+          type: integer
+        emotions:
+          type: array
+          items:
+            type: string
+      required:
+        - id
+        - name
+        - email
+        - lastCheckin
+        - avgMood
+        - trend
+        - risk
+        - streak
+        - emotions
+
+    ClientSummariesResponse:
+      type: object
+      properties:
+        clients:
+          type: array
+          items:
+            $ref: "#/components/schemas/ClientSummary"
+      required:
+        - clients
+
+    RiskAlert:
+      type: object
+      properties:
+        id:
+          type: string
+        psychologistId:
+          type: string
+        clientId:
+          type: string
+        clientName:
+          type: string
+        type:
+          type: string
+          enum: [mood_drop, no_checkin, distress_emotion, task_overdue]
+        message:
+          type: string
+        severity:
+          type: string
+          enum: [high, medium, low]
+        reviewed:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - psychologistId
+        - clientId
+        - clientName
+        - type
+        - message
+        - severity
+        - reviewed
+        - createdAt
+
+    AlertsResponse:
+      type: object
+      properties:
+        alerts:
+          type: array
+          items:
+            $ref: "#/components/schemas/RiskAlert"
+      required:
+        - alerts
+
+    JournalEntry:
+      type: object
+      properties:
+        id:
+          type: string
+        userId:
+          type: string
+        title:
+          type: string
+        body:
+          type: string
+        moodTag:
+          type: ["string", "null"]
+        isShared:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - userId
+        - title
+        - body
+        - isShared
+        - createdAt
+
+    CreateJournalEntryRequest:
+      type: object
+      properties:
+        title:
+          type: string
+        body:
+          type: string
+        moodTag:
+          type: ["string", "null"]
+        isShared:
+          type: boolean
+      required:
+        - body
+
+    UpdateJournalEntryRequest:
+      type: object
+      properties:
+        isShared:
+          type: boolean
+
+    JournalEntriesResponse:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: "#/components/schemas/JournalEntry"
+        total:
+          type: integer
+      required:
+        - entries
+        - total
+
+    JournalPromptResponse:
+      type: object
+      properties:
+        prompt:
+          type: string
+      required:
+        - prompt

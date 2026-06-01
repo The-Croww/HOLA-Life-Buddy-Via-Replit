@@ -1,0 +1,2 @@
+- [Phase 2 features](phase2-features.md) — All 5 Phase 2 admin features completed across all 3 artifacts; key patterns and endpoints documented.
+- [Phase 3 features](phase3-features.md) — All Phase 3 features complete: SQLite persistence, push notifications, real-time messaging, risk engine automation, assigned tasks, celebration UX.

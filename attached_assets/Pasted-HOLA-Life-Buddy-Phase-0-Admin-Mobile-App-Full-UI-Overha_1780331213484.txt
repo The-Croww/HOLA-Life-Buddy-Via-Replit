@@ -1,0 +1,91 @@
+HOLA! Life Buddy — Phase 0: Admin Mobile App + Full UI Overhaul
+
+PROJECT CONTEXT:
+We have a working HOLA! Life Buddy app with:
+- User mobile app (React Native + Expo) with mood tracker, HOLA Buddy AI chat, mindfulness, progress, profile
+- Psychologist web dashboard (React + Vite) with client roster, alerts, analytics, messaging
+- Node.js + Express backend with JWT auth, mood endpoints, chat (Groq AI), psychologist routes
+
+PHASE 0 TASKS:
+
+1. ADMIN MOBILE APP
+Create a new Expo app at artifacts/mobile-admin/ that mirrors the web dashboard exactly but in mobile format. The admin mobile app must have these screens:
+
+Screen 1 — Login
+- Same login as web but mobile-styled
+- Role check: only psychologist or admin can log in
+- Uses same backend /api/v1/auth/login endpoint
+
+Screen 2 — Home/Dashboard (bottom tab)
+- Stats row: total clients, active today, alerts, avg mood
+- Recent alerts list (top 3, tappable)
+- Quick action buttons: View Clients, Send Message, Generate Link Code
+
+Screen 3 — Clients tab
+- Scrollable list of linked clients
+- Each card: avatar initial, name, last check-in, mood score with color, risk badge
+- Tap to open Client Detail screen
+
+Screen 4 — Client Detail screen (pushed, not tab)
+- Same 4 tabs as web: Overview, Tasks, Journal, Notes
+- Overview: mood chart (line graph), stats, top emotions
+- Tasks: list of assigned tasks with completion status
+- Journal: shared entries accordion
+- Notes: private session notes textarea + save
+- Assign Task button → modal with same task presets as web
+
+Screen 5 — Alerts tab
+- Same alert cards as web dashboard
+- Severity color coding (red/amber/blue)
+- Mark as reviewed, View client actions
+- Live badge count on tab icon
+
+Screen 6 — Messages tab
+- Client list sidebar replaced with top scrollable client selector
+- Same Threads-style chat bubbles
+- Send message to client
+
+Screen 7 — Analytics tab
+- Key metrics cards (4 stats)
+- Line chart: avg mood trend 6 weeks
+- Bar chart: feature engagement
+- Engagement summary list
+
+Screen 8 — Profile tab
+- Psychologist name, email, role badge
+- Sign out button
+- App version
+
+IMPORTANT: The admin mobile app must use the EXACT same backend API as the web dashboard. Same endpoints, same JWT auth, same data. Whatever the psychologist sees on web they see on mobile.
+
+2. FULL UI OVERHAUL — BOTH APPS
+Redesign all screens in BOTH the user mobile app AND the admin mobile app with this design system:
+
+Design language: "Calm Minimalist" — inspired by Threads (Meta) + Linear + Notion
+- Clean white (#FFFFFF light / #0A0A0A dark) base
+- Single accent: #3DD68C (calm green) for positive actions and success states
+- Typography: Inter font, weights 400/500/600 only
+- Cards: white background, 1px #E0E0E0 border, 12px radius
+- No gradients, no heavy shadows — use border and background contrast only
+- Generous whitespace — padding 20px horizontal, 16px between sections
+- Bottom tab bar: frosted glass on iOS, solid white on Android
+- Section dividers: 1px #E0E0E0 horizontal lines with uppercase 11px section labels
+- Buttons: solid black (#0A0A0A) primary, outlined secondary
+- Status colors: #3DD68C success/calm, #FF6B6B alert/danger, #FFB547 warning, #5B9CF6 info
+- Empty states: centered emoji + title + subtitle, no borders
+- Loading states: subtle skeleton screens, no spinners where possible
+- Micro-animations: 150ms ease transitions on tab switches and card presses
+
+Apply this consistently to every screen in both mobile apps.
+
+3. SHARED COMPONENT LIBRARY
+Create artifacts/mobile-shared/components/ with reusable components used by both admin and user apps:
+- MoodBadge.tsx (score + color)
+- RiskBadge.tsx (low/medium/high)
+- EmptyState.tsx (emoji + title + subtitle)
+- SectionHeader.tsx (label + optional action button)
+- Divider.tsx (1px horizontal line)
+- StatCard.tsx (emoji + value + label)
+- Avatar.tsx (initials circle with color)
+
+Start with the admin mobile app Login screen and Home screen first, then continue through all screens in order.

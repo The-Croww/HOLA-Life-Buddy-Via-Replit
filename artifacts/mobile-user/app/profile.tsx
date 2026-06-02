@@ -80,6 +80,19 @@ export default function ProfileScreen() {
       paddingBottom: 120,
       gap: 16,
     },
+    headerRow: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 10,
+    },
+    backBtn: {
+      width: 36,
+      height: 36,
+      borderRadius: 999,
+      backgroundColor: colors.secondary,
+      alignItems: "center",
+      justifyContent: "center",
+    },
     heading: {
       fontSize: 26,
       fontFamily: "Inter_600SemiBold",
@@ -254,7 +267,16 @@ export default function ProfileScreen() {
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
-        <Text style={styles.heading}>Profile</Text>
+        <View style={styles.headerRow}>
+          <TouchableOpacity
+            style={styles.backBtn}
+            onPress={() => router.back()}
+            activeOpacity={0.7}
+          >
+            <Feather name="arrow-left" size={18} color={colors.foreground} />
+          </TouchableOpacity>
+          <Text style={styles.heading}>Profile</Text>
+        </View>
 
         {/* Avatar card */}
         <View style={styles.avatarCard}>

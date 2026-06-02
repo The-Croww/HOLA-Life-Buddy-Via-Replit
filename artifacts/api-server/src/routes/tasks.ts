@@ -28,7 +28,7 @@ router.get("/v1/tasks/assigned", authMiddleware, (req: AuthRequest, res) => {
 
 // PATCH /v1/tasks/:taskId/complete
 router.patch("/v1/tasks/:taskId/complete", authMiddleware, async (req: AuthRequest, res) => {
-  const task = dbGetTask(req.params["taskId"]!);
+  const task = dbGetTask(req.params["taskId"] as string);
   if (!task || task.userId !== req.userId!) {
     res.status(404).json({ error: "Task not found" });
     return;

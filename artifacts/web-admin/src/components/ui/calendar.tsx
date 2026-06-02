@@ -129,6 +129,8 @@ function Calendar({
           return (
             <div
               data-slot="calendar"
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore – React 19 Ref type mismatch in generated shadcn component
               ref={rootRef}
               className={cn(className)}
               {...props}

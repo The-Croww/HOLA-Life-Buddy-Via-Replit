@@ -1,0 +1,141 @@
+CRITICAL TASK: Perform a complete system audit, bug fixing, and UI refinement across the entire project.
+
+PHASE 1 — EXPO GO CRASH FIX
+
+The mobile application currently cannot open in Expo Go. When scanning the QR code, a blue screen appears.
+
+Tasks:
+
+* Identify the root cause of the Expo Go crash.
+* Review all mobile app files for runtime errors.
+* Check navigation configuration.
+* Check imports and exports.
+* Check TypeScript errors.
+* Check package compatibility issues.
+* Check environment variables.
+* Check API connection issues.
+* Check React Native and Expo compatibility.
+* Check authentication initialization.
+* Check state management issues.
+* Check all screens for rendering errors.
+* Fix every issue preventing the application from loading successfully.
+
+After fixes:
+
+* Verify the mobile app launches successfully in Expo Go.
+* Verify all screens load correctly.
+* Verify authentication works correctly.
+* Verify navigation works correctly.
+* Verify no red screen, blue screen, or runtime crashes remain.
+
+PHASE 2 — USER MOBILE APP UPDATES
+
+Profile Screen:
+
+* Remove the Sign Out button located at the bottom of the Profile screen.
+* Ensure layout remains visually balanced after removal.
+* Maintain all other profile functionality.
+
+UI Review:
+
+* Review all User App screens.
+* Fix layout inconsistencies.
+* Fix spacing issues.
+* Improve responsiveness.
+* Ensure consistent styling throughout the app.
+
+PHASE 3 — ADMIN WEB DASHBOARD COMPLETE REDESIGN
+
+After login, completely redesign the Admin Web interface using the established Cosmos-inspired design system.
+
+Requirements:
+
+* Modern editorial minimalist design.
+* Premium SaaS dashboard appearance.
+* Clean and spacious layouts.
+* Improved visual hierarchy.
+* Better dashboard organization.
+* Modern KPI cards.
+* Improved analytics presentation.
+* Improved data tables.
+* Better sidebar navigation.
+* Better header design.
+* Consistent typography.
+* Improved spacing and alignment.
+* Better mobile responsiveness.
+* Improved dark mode support.
+* Professional enterprise-grade appearance.
+
+Keep:
+
+* Existing functionality.
+* Existing APIs.
+* Existing database connections.
+* Existing business logic.
+* Existing user permissions.
+* Existing workflows.
+
+Only improve:
+
+* Design.
+* Layout.
+* User experience.
+* Visual consistency.
+
+PHASE 4 — FULL SYSTEM QA TESTING
+
+After all fixes and redesign work are completed:
+
+Perform a complete application-wide audit.
+
+Test:
+
+* Authentication flows.
+* User login.
+* Admin login.
+* Navigation.
+* API calls.
+* CRUD operations.
+* Forms.
+* Validation.
+* Search.
+* Filters.
+* Dashboard metrics.
+* Notifications.
+* Profile management.
+* Responsive layouts.
+* Dark mode.
+* Error handling.
+
+Identify and fix:
+
+* Runtime errors.
+* Build errors.
+* TypeScript errors.
+* Console warnings.
+* Broken routes.
+* Broken links.
+* UI bugs.
+* State management issues.
+* Performance issues.
+
+FINAL REQUIREMENT
+
+Do not stop after making changes.
+
+Continue reviewing and testing the entire project until:
+
+* No critical errors remain.
+* No obvious UI issues remain.
+* No broken functionality remains.
+* Mobile app runs successfully in Expo Go.
+* Admin web dashboard is fully redesigned.
+* System is stable and production-ready.
+
+At the end, provide a detailed report containing:
+
+1. All bugs found.
+2. All bugs fixed.
+3. Files modified.
+4. UI improvements made.
+5. Remaining recommendations.

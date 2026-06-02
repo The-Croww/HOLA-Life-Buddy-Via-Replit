@@ -17,6 +17,7 @@ import {
   dbGetAppointmentsByClient,
   dbGetAISummaryCache,
   dbSetAISummaryCache,
+  dbGetClientsByPsychologist,
   type SessionNote,
   type Goal,
   type Appointment,
@@ -41,7 +42,7 @@ router.post(
   psychOnly as any,
   async (req: AuthRequest, res: Response) => {
     const psychId = req.userId!;
-    const clientId = req.params.id;
+    const clientId = req.params.id as string;
 
     if (!dbIsClientOfPsychologist(psychId, clientId)) {
       res.status(403).json({ error: "Not your client" });
@@ -101,7 +102,7 @@ Write a clinical summary covering: mood pattern, emotional themes, engagement le
           }),
         });
         if (groqRes.ok) {
-          const data = await groqRes.json();
+          const data = await groqRes.json() as any;
           summary = data.choices?.[0]?.message?.content?.trim() ?? "";
         }
       } catch (_) {}
@@ -132,7 +133,7 @@ router.get(
   psychOnly as any,
   (req: AuthRequest, res: Response) => {
     const psychId = req.userId!;
-    const clientId = req.params.id;
+    const clientId = req.params.id as string;
     if (!dbIsClientOfPsychologist(psychId, clientId)) { res.status(403).json({ error: "Not your client" }); return; }
     const notes = dbGetNotes(clientId, psychId);
     res.json({ notes });
@@ -145,7 +146,7 @@ router.post(
   psychOnly as any,
   (req: AuthRequest, res: Response) => {
     const psychId = req.userId!;
-    const clientId = req.params.id;
+    const clientId = req.params.id as string;
     if (!dbIsClientOfPsychologist(psychId, clientId)) { res.status(403).json({ error: "Not your client" }); return; }
 
     const { template = "free", title = "Session note", content = {} } = req.body;
@@ -171,7 +172,7 @@ router.get(
   "/v1/psychologist/clients/:id/goals",
   authMiddleware,
   (req: AuthRequest, res: Response) => {
-    const clientId = req.params.id;
+    const clientId = req.params.id as string;
     const userId = req.userId!;
     const role = req.userRole;
 
@@ -190,7 +191,7 @@ router.post(
   psychOnly as any,
   (req: AuthRequest, res: Response) => {
     const psychId = req.userId!;
-    const clientId = req.params.id;
+    const clientId = req.params.id as string;
     if (!dbIsClientOfPsychologist(psychId, clientId)) { res.status(403).json({ error: "Not your client" }); return; }
 
     const { title, description = "", targetDate = null } = req.body;
@@ -219,8 +220,8 @@ router.patch(
   psychOnly as any,
   (req: AuthRequest, res: Response) => {
     const psychId = req.userId!;
-    const clientId = req.params.id;
-    const { goalId } = req.params;
+    const clientId = req.params.id as string;
+    const goalId = req.params.goalId as string;
     if (!dbIsClientOfPsychologist(psychId, clientId)) { res.status(403).json({ error: "Not your client" }); return; }
 
     const { status, title, description, targetDate } = req.body;
@@ -351,10 +352,10 @@ router.get(
       };
     }).filter(Boolean);
 
-    const totalCheckIns = reports.reduce((s, r: any) => s + r.checkIns, 0);
+    const totalCheckIns = reports.reduce((s: number, r: any) => s + r.checkIns, 0);
     const mostImproved = [...reports].sort((a: any, b: any) => Number(b.avgMood ?? 0) - Number(a.avgMood ?? 0))[0];
     const overallAvg = reports.filter((r: any) => r.avgMood !== null).length
-      ? (reports.filter((r: any) => r.avgMood !== null).reduce((s, r: any) => s + Number(r.avgMood), 0) / reports.filter((r: any) => r.avgMood !== null).length).toFixed(1)
+      ? (reports.filter((r: any) => r.avgMood !== null).reduce((s: number, r: any) => s + Number(r.avgMood), 0) / reports.filter((r: any) => r.avgMood !== null).length).toFixed(1)
       : null;
 
     res.json({

@@ -265,7 +265,7 @@ export default function MoodTrackerScreen() {
     d.setDate(d.getDate() - (6 - i));
     const dayStr = d.toDateString();
     const match = entries.find(
-      (e) => new Date(e.createdAt).toDateString() === dayStr,
+      (e: any) => new Date(e.createdAt).toDateString() === dayStr,
     );
     return {
       day: d.toLocaleDateString("en-US", { weekday: "short" }).slice(0, 1),
@@ -516,7 +516,7 @@ export default function MoodTrackerScreen() {
                 No mood entries yet. Log your first one above!
               </Text>
             ) : (
-              entries.slice(0, 10).map((entry) => (
+              entries.slice(0, 10).map((entry: any) => (
                 <View
                   key={entry.id}
                   style={[

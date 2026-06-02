@@ -7,6 +7,7 @@ import {
   LogOut,
   Calendar,
   ClipboardList,
+  ChevronRight,
 } from "lucide-react";
 import { useAuth, Page } from "../App";
 import logoImg from "../assets/logo.png";
@@ -15,8 +16,8 @@ const NAV_GROUPS = [
   {
     label: "Clients",
     items: [
-      { id: "dashboard", icon: LayoutDashboard, label: "Clients" },
-      { id: "alerts", icon: Bell, label: "Alerts" },
+      { id: "dashboard", icon: LayoutDashboard, label: "Client Roster" },
+      { id: "alerts", icon: Bell, label: "Risk Alerts" },
     ],
   },
   {
@@ -38,49 +39,59 @@ const NAV_GROUPS = [
 export function Sidebar({
   currentPage,
   onNavigate,
+  alertCount = 0,
 }: {
   currentPage: string;
   onNavigate: (p: Page) => void;
+  alertCount?: number;
 }) {
   const { user, signOut } = useAuth();
 
   return (
     <aside
       style={{
-        width: 232,
+        width: 240,
         position: "fixed",
         top: 0,
         left: 0,
         height: "100vh",
-        background: "#0d0d0d",
+        background: "#0a0a0a",
         display: "flex",
         flexDirection: "column",
-        borderRight: "1px solid #1a1a1a",
+        borderRight: "1px solid #1c1c1c",
+        zIndex: 100,
       }}
     >
       {/* Brand */}
       <div
         style={{
-          padding: "20px 20px 18px",
-          borderBottom: "1px solid #1f1f1f",
+          padding: "18px 16px 16px",
+          borderBottom: "1px solid #1c1c1c",
           display: "flex",
           alignItems: "center",
           gap: 10,
           flexShrink: 0,
         }}
       >
-        <img
-          src={logoImg}
-          alt="HOLA!"
+        <div
           style={{
             width: 32,
             height: 32,
-            borderRadius: 8,
-            objectFit: "contain",
+            borderRadius: 9,
+            background: "#3DD68C",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
             flexShrink: 0,
-            background: "#fff",
+            overflow: "hidden",
           }}
-        />
+        >
+          <img
+            src={logoImg}
+            alt="HOLA!"
+            style={{ width: 22, height: 22, objectFit: "contain" }}
+          />
+        </div>
         <div>
           <div
             style={{
@@ -88,12 +99,12 @@ export function Sidebar({
               fontWeight: 700,
               color: "#ffffff",
               lineHeight: 1.2,
-              letterSpacing: "-0.02em",
+              letterSpacing: "-0.03em",
             }}
           >
             HOLA!
           </div>
-          <div style={{ fontSize: 11, color: "#555", marginTop: 2 }}>
+          <div style={{ fontSize: 10, color: "#444", marginTop: 1, letterSpacing: "0.04em", textTransform: "uppercase" as const }}>
             Clinician Portal
           </div>
         </div>
@@ -103,22 +114,23 @@ export function Sidebar({
       <nav
         style={{
           flex: 1,
-          padding: "14px 10px",
+          padding: "10px 8px",
           display: "flex",
           flexDirection: "column",
           overflowY: "auto",
+          gap: 2,
         }}
       >
         {NAV_GROUPS.map((group, gi) => (
-          <div key={group.label} style={{ marginBottom: 4 }}>
+          <div key={group.label} style={{ marginBottom: 6 }}>
             <div
               style={{
-                fontSize: 10,
+                fontSize: 9.5,
                 fontWeight: 600,
-                color: "#333",
-                textTransform: "uppercase",
-                letterSpacing: "0.1em",
-                padding: "8px 8px 5px",
+                color: "#2e2e2e",
+                textTransform: "uppercase" as const,
+                letterSpacing: "0.12em",
+                padding: "8px 10px 4px",
               }}
             >
               {group.label}
@@ -126,6 +138,7 @@ export function Sidebar({
 
             {group.items.map(({ id, icon: Icon, label }) => {
               const active = currentPage === id;
+              const isAlerts = id === "alerts";
               return (
                 <button
                   key={id}
@@ -139,49 +152,62 @@ export function Sidebar({
                     borderRadius: 8,
                     cursor: "pointer",
                     background: active ? "#1a1a1a" : "transparent",
-                    color: active ? "#ffffff" : "#565656",
-                    border: "none",
+                    color: active ? "#ffffff" : "#4a4a4a",
+                    border: active ? "1px solid #2a2a2a" : "1px solid transparent",
                     fontSize: 13,
                     fontWeight: active ? 500 : 400,
                     fontFamily: "inherit",
                     marginBottom: 1,
-                    textAlign: "left",
+                    textAlign: "left" as const,
                     letterSpacing: "-0.01em",
+                    transition: "all 0.1s ease",
+                    position: "relative" as const,
                   }}
                   onMouseEnter={(e) => {
                     if (!active) {
-                      e.currentTarget.style.background = "#161616";
+                      e.currentTarget.style.background = "#141414";
                       e.currentTarget.style.color = "#c0c0c0";
+                      e.currentTarget.style.borderColor = "#1f1f1f";
                     }
                   }}
                   onMouseLeave={(e) => {
                     if (!active) {
                       e.currentTarget.style.background = "transparent";
-                      e.currentTarget.style.color = "#565656";
+                      e.currentTarget.style.color = "#4a4a4a";
+                      e.currentTarget.style.borderColor = "transparent";
                     }
                   }}
                 >
-                  <Icon size={15} strokeWidth={active ? 2 : 1.75} style={{ flexShrink: 0 }} />
+                  <Icon
+                    size={14}
+                    strokeWidth={active ? 2.2 : 1.8}
+                    style={{ flexShrink: 0 }}
+                  />
                   <span style={{ flex: 1 }}>{label}</span>
 
-                  {id === "alerts" && (
+                  {isAlerts && alertCount > 0 && (
                     <span
                       style={{
-                        minWidth: 16,
-                        height: 16,
+                        minWidth: 18,
+                        height: 18,
                         borderRadius: 9999,
                         background: "#ef4444",
                         color: "#fff",
-                        fontSize: 9,
+                        fontSize: 10,
                         fontWeight: 700,
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        padding: "0 4px",
+                        padding: "0 5px",
+                        lineHeight: 1,
                       }}
                     >
-                      !
+                      {alertCount > 99 ? "99+" : alertCount}
                     </span>
+                  )}
+
+                  {active && (
+                    <ChevronRight size={12} style={{ opacity: 0.4 }} />
                   )}
                 </button>
               );
@@ -191,8 +217,8 @@ export function Sidebar({
               <div
                 style={{
                   height: 1,
-                  background: "#1a1a1a",
-                  margin: "10px 4px 6px",
+                  background: "#161616",
+                  margin: "8px 6px 4px",
                 }}
               />
             )}
@@ -203,8 +229,8 @@ export function Sidebar({
       {/* User section */}
       <div
         style={{
-          padding: "12px",
-          borderTop: "1px solid #1a1a1a",
+          padding: "10px",
+          borderTop: "1px solid #1c1c1c",
           flexShrink: 0,
         }}
       >
@@ -212,7 +238,7 @@ export function Sidebar({
           style={{
             borderRadius: 10,
             padding: "10px 12px",
-            background: "#141414",
+            background: "#111",
             marginBottom: 8,
             display: "flex",
             alignItems: "center",
@@ -221,17 +247,18 @@ export function Sidebar({
         >
           <div
             style={{
-              width: 30,
-              height: 30,
+              width: 32,
+              height: 32,
               borderRadius: "50%",
-              background: "#3DD68C",
+              background: "linear-gradient(135deg, #3DD68C, #22c073)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              fontSize: 12,
+              fontSize: 13,
               fontWeight: 700,
-              color: "#0d0d0d",
+              color: "#0a0a0a",
               flexShrink: 0,
+              letterSpacing: "-0.01em",
             }}
           >
             {user?.name?.charAt(0).toUpperCase()}
@@ -241,16 +268,17 @@ export function Sidebar({
               style={{
                 fontSize: 13,
                 fontWeight: 500,
-                color: "#e0e0e0",
-                whiteSpace: "nowrap",
+                color: "#d0d0d0",
+                whiteSpace: "nowrap" as const,
                 overflow: "hidden",
                 textOverflow: "ellipsis",
                 letterSpacing: "-0.01em",
+                lineHeight: 1.3,
               }}
             >
               {user?.name}
             </div>
-            <div style={{ fontSize: 11, color: "#444", marginTop: 1 }}>
+            <div style={{ fontSize: 10.5, color: "#3DD68C", marginTop: 1, letterSpacing: "0.02em" }}>
               Psychologist
             </div>
           </div>
@@ -269,20 +297,25 @@ export function Sidebar({
             background: "transparent",
             border: "1px solid #1f1f1f",
             cursor: "pointer",
-            color: "#ef4444",
-            fontSize: 13,
+            color: "#555",
+            fontSize: 12.5,
             fontWeight: 500,
             fontFamily: "inherit",
             letterSpacing: "-0.01em",
+            transition: "all 0.1s ease",
           }}
-          onMouseEnter={(e) =>
-            (e.currentTarget.style.background = "#1a0a0a")
-          }
-          onMouseLeave={(e) =>
-            (e.currentTarget.style.background = "transparent")
-          }
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = "#1a0a0a";
+            e.currentTarget.style.color = "#ef4444";
+            e.currentTarget.style.borderColor = "#3a1212";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = "transparent";
+            e.currentTarget.style.color = "#555";
+            e.currentTarget.style.borderColor = "#1f1f1f";
+          }}
         >
-          <LogOut size={13} />
+          <LogOut size={12} />
           Sign out
         </button>
       </div>

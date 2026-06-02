@@ -11,6 +11,14 @@ Notifications.setNotificationHandler({
   }),
 });
 
+function isGranted(perms: unknown): boolean {
+  if (!perms || typeof perms !== "object") return false;
+  const p = perms as Record<string, unknown>;
+  if (typeof p["granted"] === "boolean") return p["granted"];
+  if (p["status"] === "granted") return true;
+  return false;
+}
+
 export function usePushNotifications(token: string | null, baseUrl: string) {
   const registered = useRef(false);
 
@@ -20,13 +28,13 @@ export function usePushNotifications(token: string | null, baseUrl: string) {
 
     (async () => {
       try {
-        const { status: existingStatus } = await Notifications.getPermissionsAsync();
-        let finalStatus = existingStatus;
-        if (existingStatus !== "granted") {
-          const { status } = await Notifications.requestPermissionsAsync();
-          finalStatus = status;
+        const existingPerms = await Notifications.getPermissionsAsync();
+        let finalGranted = isGranted(existingPerms);
+        if (!finalGranted) {
+          const newPerms = await Notifications.requestPermissionsAsync();
+          finalGranted = isGranted(newPerms);
         }
-        if (finalStatus !== "granted") return;
+        if (!finalGranted) return;
 
         const expoPushToken = await Notifications.getExpoPushTokenAsync();
         if (!expoPushToken.data) return;

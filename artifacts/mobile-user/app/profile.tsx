@@ -6,7 +6,6 @@ import {
   ScrollView,
   TouchableOpacity,
   Platform,
-  Alert,
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -37,7 +36,7 @@ function calcStreak(entries: { createdAt: string }[]): number {
 export default function ProfileScreen() {
   const colors = useColors();
   const insets = useSafeAreaInsets();
-  const { user: localUser, signOut } = useAuth();
+  const { user: localUser } = useAuth();
   const topPad = Platform.OS === "web" ? 67 : insets.top;
   const [journalCount, setJournalCount] = useState(0);
 
@@ -64,13 +63,6 @@ export default function ProfileScreen() {
     : "Recently";
   const linkedPsychName = (me as any)?.linkedPsychologistName as string | null;
   const isLinked = !!linkedPsychName;
-
-  const handleSignOut = () => {
-    Alert.alert("Sign out", "Are you sure you want to sign out?", [
-      { text: "Cancel", style: "cancel" },
-      { text: "Sign out", style: "destructive", onPress: signOut },
-    ]);
-  };
 
   const styles = StyleSheet.create({
     container: { flex: 1, backgroundColor: colors.background },
@@ -238,21 +230,6 @@ export default function ProfileScreen() {
       fontFamily: "Inter_400Regular",
       color: colors.foreground,
     },
-    signOutBtn: {
-      flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "center",
-      gap: 8,
-      borderWidth: 1,
-      borderColor: colors.alert,
-      borderRadius: 8,
-      paddingVertical: 14,
-    },
-    signOutText: {
-      fontSize: 14,
-      fontFamily: "Inter_500Medium",
-      color: colors.alert,
-    },
     versionText: {
       fontSize: 12,
       fontFamily: "Inter_400Regular",
@@ -393,15 +370,6 @@ export default function ProfileScreen() {
             />
           </TouchableOpacity>
         </View>
-
-        <TouchableOpacity
-          style={styles.signOutBtn}
-          onPress={handleSignOut}
-          activeOpacity={0.7}
-        >
-          <Feather name="log-out" size={16} color={colors.alert} />
-          <Text style={styles.signOutText}>Sign out</Text>
-        </TouchableOpacity>
 
         <Text style={styles.versionText}>HOLA! Life Buddy v1.0.0</Text>
       </ScrollView>

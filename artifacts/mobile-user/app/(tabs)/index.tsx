@@ -158,7 +158,7 @@ export default function HomeScreen() {
 
   const { mutate: completeTask } = useCompleteTask({
     mutation: {
-      onSuccess: (_data, vars) => {
+      onSuccess: (_data: unknown, vars: any) => {
         const taskId = (vars as any).taskId ?? (vars as any).pathParams?.taskId;
         if (taskId) setCelebratingTaskId(taskId);
         setTimeout(() => {
@@ -172,7 +172,7 @@ export default function HomeScreen() {
   const displayName = me?.name ?? localUser?.name ?? "Friend";
   const hasTodayMood = todayMood?.entry != null;
   const moodScore = todayMood?.entry?.moodScore ?? 5;
-  const pendingTasks = (tasksData?.tasks ?? []).filter((t) => !t.completedAt);
+  const pendingTasks = (tasksData?.tasks ?? []).filter((t: any) => !t.completedAt);
   const weekPct = Math.min(1, weeklyCount / Math.max(weeklyGoal, 1));
 
   const handleQuickMood = (score: number) => {
@@ -415,7 +415,7 @@ export default function HomeScreen() {
               </Text>
             </View>
           )}
-          {pendingTasks.length > 0 && pendingTasks.map((task) => (
+          {pendingTasks.length > 0 && pendingTasks.map((task: any) => (
               <View
                 key={task.id}
                 style={[

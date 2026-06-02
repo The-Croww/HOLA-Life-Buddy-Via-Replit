@@ -36,7 +36,7 @@ export default function RegisterScreen() {
 
   const { mutate: register, isPending } = useRegister({
     mutation: {
-      onSuccess: async (data) => {
+      onSuccess: async (data: any) => {
         await signIn(data.token, data.user);
         router.replace("/(tabs)");
       },

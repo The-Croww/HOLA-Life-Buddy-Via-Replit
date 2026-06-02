@@ -100,7 +100,7 @@ router.get("/v1/psychologist/clients", authMiddleware, psychOnly, (req: AuthRequ
 
 // GET /v1/psychologist/clients/:clientId/mood
 router.get("/v1/psychologist/clients/:clientId/mood", authMiddleware, psychOnly, (req: AuthRequest, res) => {
-  const clientId = req.params["clientId"]!;
+  const clientId = req.params["clientId"] as string;
   if (!dbIsClientOfPsychologist(req.userId!, clientId)) {
     res.status(403).json({ error: "Client not assigned to you" });
     return;
@@ -111,7 +111,7 @@ router.get("/v1/psychologist/clients/:clientId/mood", authMiddleware, psychOnly,
 
 // POST /v1/psychologist/clients/:clientId/tasks
 router.post("/v1/psychologist/clients/:clientId/tasks", authMiddleware, psychOnly, async (req: AuthRequest, res) => {
-  const { clientId } = req.params;
+  const clientId = req.params.clientId as string;
   if (!dbIsClientOfPsychologist(req.userId!, clientId!)) {
     res.status(403).json({ error: "Client not assigned to you" });
     return;
@@ -147,7 +147,7 @@ router.post("/v1/psychologist/clients/:clientId/tasks", authMiddleware, psychOnl
 
 // GET /v1/psychologist/clients/:clientId/tasks
 router.get("/v1/psychologist/clients/:clientId/tasks", authMiddleware, psychOnly, (req: AuthRequest, res) => {
-  const { clientId } = req.params;
+  const clientId = req.params.clientId as string;
   const tasks = dbGetUserTasks(clientId!).filter((t) => t.psychologistId === req.userId!);
   res.json({ tasks });
 });
@@ -160,7 +160,7 @@ router.get("/v1/psychologist/alerts", authMiddleware, psychOnly, (req: AuthReque
 
 // PATCH /v1/psychologist/alerts/:alertId/review
 router.patch("/v1/psychologist/alerts/:alertId/review", authMiddleware, psychOnly, (req: AuthRequest, res) => {
-  const alert = dbGetAlert(req.params["alertId"]!);
+  const alert = dbGetAlert(req.params["alertId"] as string);
   if (!alert || alert.psychologistId !== req.userId!) {
     res.status(404).json({ error: "Alert not found" });
     return;
@@ -171,7 +171,7 @@ router.patch("/v1/psychologist/alerts/:alertId/review", authMiddleware, psychOnl
 
 // GET /v1/psychologist/clients/:clientId/journal — shared entries only
 router.get("/v1/psychologist/clients/:clientId/journal", authMiddleware, psychOnly, (req: AuthRequest, res) => {
-  const { clientId } = req.params;
+  const clientId = req.params.clientId as string;
   if (!dbIsClientOfPsychologist(req.userId!, clientId!)) {
     res.status(403).json({ error: "Client not assigned to you" });
     return;

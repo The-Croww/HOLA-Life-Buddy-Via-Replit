@@ -29,6 +29,8 @@ const Audio = {
   },
 } as const;
 
+type SoundObject = Awaited<ReturnType<typeof Audio.Sound.createAsync>>["sound"];
+
 const TOOLS = [
   {
     id: "worry",
@@ -160,7 +162,7 @@ export default function MindfulnessScreen() {
   const [currentTrack, setCurrentTrack] = useState<string | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoadingAudio, setIsLoadingAudio] = useState(false);
-  const soundRef = useRef<Audio.Sound | null>(null);
+  const soundRef = useRef<SoundObject | null>(null);
 
   const stopAudio = async () => {
     if (soundRef.current) {

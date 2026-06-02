@@ -197,7 +197,7 @@ export default function JournalScreen() {
   };
 
   const moodTag = MOOD_TAGS.find((m) => m.id === selectedMood);
-  const entryMoodTag = MOOD_TAGS.find((m) => m.id === selectedEntry?.mood);
+  const entryMoodTag = MOOD_TAGS.find((m) => m.id === selectedEntry?.moodTag);
 
   const grouped: Record<string, JournalEntry[]> = {};
   for (const e of entries) {

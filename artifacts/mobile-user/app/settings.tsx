@@ -47,7 +47,7 @@ export default function SettingsScreen() {
 
   const { mutate: linkToPhysician, isPending: linking } = useLinkToPsychologist({
     mutation: {
-      onSuccess: (data) => {
+      onSuccess: (data: any) => {
         setLinkError(null);
         setLinkCodeInput("");
         setLinkSuccess(`Connected to ${data.psychologistName}!`);

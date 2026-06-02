@@ -30,7 +30,7 @@ export default function LoginScreen() {
 
   const { mutate: login, isPending } = useLogin({
     mutation: {
-      onSuccess: async (data) => {
+      onSuccess: async (data: any) => {
         await signIn(data.token, data.user);
         if (data.user.role === "psychologist" || data.user.role === "admin") {
           router.replace("/(admin)");

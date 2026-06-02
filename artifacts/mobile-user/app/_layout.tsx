@@ -39,12 +39,13 @@ function AuthGuard({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (isLoading) return;
 
+    const seg0 = segments[0] as string | undefined;
     const isPublicRoute =
-      segments[0] === "onboarding" ||
-      segments[0] === "login" ||
-      segments[0] === "register" ||
-      segments[0] === undefined ||
-      segments[0] === "index";
+      seg0 === "onboarding" ||
+      seg0 === "login" ||
+      seg0 === "register" ||
+      seg0 === undefined ||
+      seg0 === "index";
 
     const isProtectedRoute =
       segments[0] === "(tabs)" ||

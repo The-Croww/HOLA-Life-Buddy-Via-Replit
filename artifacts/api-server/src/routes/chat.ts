@@ -70,7 +70,7 @@ router.post(
         return res.status(502).json({ error: "AI service unavailable" });
       }
 
-      const data = await response.json();
+      const data = await response.json() as any;
       const text =
         data.choices?.[0]?.message?.content ??
         "I'm here with you. Could you tell me more?";

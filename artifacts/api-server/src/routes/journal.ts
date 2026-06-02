@@ -41,7 +41,7 @@ router.patch("/v1/journal/:entryId", authMiddleware, (req: AuthRequest, res) => 
   if (typeof req.body.isShared === "boolean") {
     updates.isShared = req.body.isShared;
   }
-  const updated = dbUpdateJournalEntry(req.params["entryId"]!, req.userId!, updates);
+  const updated = dbUpdateJournalEntry(req.params["entryId"] as string, req.userId!, updates);
   if (!updated) {
     res.status(404).json({ error: "Entry not found" });
     return;
@@ -51,7 +51,7 @@ router.patch("/v1/journal/:entryId", authMiddleware, (req: AuthRequest, res) => 
 
 // DELETE /v1/journal/:entryId
 router.delete("/v1/journal/:entryId", authMiddleware, (req: AuthRequest, res) => {
-  const deleted = dbDeleteJournalEntry(req.params["entryId"]!, req.userId!);
+  const deleted = dbDeleteJournalEntry(req.params["entryId"] as string, req.userId!);
   if (!deleted) {
     res.status(404).json({ error: "Entry not found" });
     return;

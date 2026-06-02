@@ -68,11 +68,6 @@ export function CustomDrawer({ visible, onClose }: CustomDrawerProps) {
       onRequestClose={onClose}
     >
       <View style={styles.overlay}>
-        <TouchableOpacity
-          style={styles.backdrop}
-          onPress={onClose}
-          activeOpacity={1}
-        />
         <Animated.View
           style={[
             styles.drawer,
@@ -127,6 +122,11 @@ export function CustomDrawer({ visible, onClose }: CustomDrawerProps) {
             </TouchableOpacity>
           </View>
         </Animated.View>
+        <TouchableOpacity
+          style={styles.backdrop}
+          onPress={onClose}
+          activeOpacity={1}
+        />
       </View>
     </Modal>
   );

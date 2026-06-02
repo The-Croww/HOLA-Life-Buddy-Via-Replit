@@ -1,3 +1,4 @@
 - [Phase 2 features](phase2-features.md) — All 5 Phase 2 admin features completed across all 3 artifacts; key patterns and endpoints documented.
 - [Phase 3 features](phase3-features.md) — All Phase 3 features complete: SQLite persistence, push notifications, real-time messaging, risk engine automation, assigned tasks, celebration UX.
 - [Phase 4 features](phase4-features.md) — Phase 4 polish complete: enhanced onboarding, admin onboarding, empty states, mood score bounce, splash color, messages "Say hello 👋", register name prefill.
+- [Phase 4 bug fixes](phase4-bugfixes.md) — Eye icons, role-based sign-in redirects, user sidebar fix, admin drawer, alerts bell, web-admin localStorage persistence, index.tsx role guard, admin screen title dedup.

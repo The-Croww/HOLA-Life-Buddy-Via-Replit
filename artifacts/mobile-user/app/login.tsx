@@ -12,6 +12,7 @@ import {
 import { router } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
+import { Feather } from "@expo/vector-icons";
 import { useColors } from "@/hooks/useColors";
 import { useAuth } from "@/context/AuthContext";
 import { useLogin } from "@workspace/api-client-react";
@@ -22,6 +23,7 @@ export default function LoginScreen() {
   const { signIn } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const topPad = Platform.OS === "web" ? 67 : insets.top;
   const bottomPad = Platform.OS === "web" ? 34 : insets.bottom;
@@ -30,7 +32,11 @@ export default function LoginScreen() {
     mutation: {
       onSuccess: async (data) => {
         await signIn(data.token, data.user);
-        router.replace("/(tabs)");
+        if (data.user.role === "psychologist" || data.user.role === "admin") {
+          router.replace("/(admin)");
+        } else {
+          router.replace("/(tabs)");
+        }
       },
       onError: () => {
         Alert.alert("Login failed", "Invalid email or password.");
@@ -69,11 +75,7 @@ export default function LoginScreen() {
           <TextInput
             style={[
               styles.input,
-              {
-                backgroundColor: colors.card,
-                borderColor: colors.border,
-                color: colors.foreground,
-              },
+              { backgroundColor: colors.card, borderColor: colors.border, color: colors.foreground },
             ]}
             placeholder="you@example.com"
             placeholderTextColor={colors.mutedForeground}
@@ -84,23 +86,37 @@ export default function LoginScreen() {
             autoCorrect={false}
           />
         </View>
+
         <View style={styles.field}>
           <Text style={[styles.label, { color: colors.mutedForeground }]}>Password</Text>
-          <TextInput
-            style={[
-              styles.input,
-              {
-                backgroundColor: colors.card,
-                borderColor: colors.border,
-                color: colors.foreground,
-              },
-            ]}
-            placeholder="••••••••"
-            placeholderTextColor={colors.mutedForeground}
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-          />
+          <View style={styles.pwWrap}>
+            <TextInput
+              style={[
+                styles.input,
+                styles.pwInput,
+                { backgroundColor: colors.card, borderColor: colors.border, color: colors.foreground },
+              ]}
+              placeholder="••••••••"
+              placeholderTextColor={colors.mutedForeground}
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry={!showPassword}
+              autoCapitalize="none"
+              autoCorrect={false}
+            />
+            <TouchableOpacity
+              style={styles.eyeBtn}
+              onPress={() => setShowPassword((v) => !v)}
+              accessibilityLabel={showPassword ? "Hide password" : "Show password"}
+              hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
+            >
+              <Feather
+                name={showPassword ? "eye-off" : "eye"}
+                size={18}
+                color={colors.mutedForeground}
+              />
+            </TouchableOpacity>
+          </View>
         </View>
 
         <TouchableOpacity
@@ -132,39 +148,14 @@ export default function LoginScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flexGrow: 1,
-    paddingHorizontal: 24,
-    gap: 32,
-  },
-  header: {
-    gap: 8,
-  },
-  brand: {
-    fontSize: 18,
-    fontFamily: "Inter_600SemiBold",
-    letterSpacing: 1,
-  },
-  title: {
-    fontSize: 28,
-    fontFamily: "Inter_600SemiBold",
-    lineHeight: 36,
-  },
-  subtitle: {
-    fontSize: 15,
-    fontFamily: "Inter_400Regular",
-    lineHeight: 22,
-  },
-  form: {
-    gap: 16,
-  },
-  field: {
-    gap: 6,
-  },
-  label: {
-    fontSize: 13,
-    fontFamily: "Inter_500Medium",
-  },
+  container: { flexGrow: 1, paddingHorizontal: 24, gap: 32 },
+  header: { gap: 8 },
+  brand: { fontSize: 18, fontFamily: "Inter_600SemiBold", letterSpacing: 1 },
+  title: { fontSize: 28, fontFamily: "Inter_600SemiBold", lineHeight: 36 },
+  subtitle: { fontSize: 15, fontFamily: "Inter_400Regular", lineHeight: 22 },
+  form: { gap: 16 },
+  field: { gap: 6 },
+  label: { fontSize: 13, fontFamily: "Inter_500Medium" },
   input: {
     borderWidth: 1,
     borderRadius: 8,
@@ -173,19 +164,19 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontFamily: "Inter_400Regular",
   },
-  btn: {
-    paddingVertical: 16,
-    borderRadius: 8,
+  pwWrap: { position: "relative" },
+  pwInput: { paddingRight: 48 },
+  eyeBtn: {
+    position: "absolute",
+    right: 14,
+    top: 0,
+    bottom: 0,
+    justifyContent: "center",
     alignItems: "center",
-    marginTop: 8,
+    minWidth: 44,
+    minHeight: 44,
   },
-  btnText: {
-    fontSize: 15,
-    fontFamily: "Inter_600SemiBold",
-  },
-  switchText: {
-    fontSize: 14,
-    fontFamily: "Inter_400Regular",
-    textAlign: "center",
-  },
+  btn: { paddingVertical: 16, borderRadius: 8, alignItems: "center", marginTop: 8 },
+  btnText: { fontSize: 15, fontFamily: "Inter_600SemiBold" },
+  switchText: { fontSize: 14, fontFamily: "Inter_400Regular", textAlign: "center" },
 });

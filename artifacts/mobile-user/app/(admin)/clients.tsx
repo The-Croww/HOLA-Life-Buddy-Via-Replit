@@ -44,7 +44,6 @@ export default function AdminClientsScreen() {
   return (
     <SafeAreaView style={s.safe} edges={["top"]}>
       <View style={s.header}>
-        <Text style={s.title}>Clients</Text>
         <Text style={s.count}>{clients.length} linked</Text>
       </View>
 

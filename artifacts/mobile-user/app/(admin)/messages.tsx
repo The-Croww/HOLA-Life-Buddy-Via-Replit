@@ -59,9 +59,7 @@ export default function AdminMessagesScreen() {
 
   return (
     <SafeAreaView style={s.safe} edges={["top"]}>
-      <View style={s.header}>
-        <Text style={s.title}>Messages</Text>
-      </View>
+      <View style={s.headerSpacer} />
 
       <FlatList
         horizontal
@@ -150,6 +148,7 @@ export default function AdminMessagesScreen() {
 const s = StyleSheet.create({
   safe: { flex: 1, backgroundColor: DS.colors.background },
   header: { paddingHorizontal: DS.spacing.lg, paddingTop: DS.spacing.md, paddingBottom: DS.spacing.xs },
+  headerSpacer: { height: DS.spacing.xs },
   title: { fontFamily: DS.fonts.semibold, fontSize: 26, color: DS.colors.dark },
   chipList: { paddingHorizontal: DS.spacing.lg, paddingVertical: DS.spacing.sm, gap: DS.spacing.xs },
   chip: { flexDirection: "row", alignItems: "center", gap: 6, paddingHorizontal: 12, paddingVertical: 6, borderRadius: DS.radius.full, borderWidth: 1, borderColor: DS.colors.border, backgroundColor: DS.colors.background },

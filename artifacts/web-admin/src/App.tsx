@@ -1,4 +1,4 @@
-import React, { useState, createContext, useContext } from "react";
+import React, { useState, createContext, useContext, useEffect } from "react";
 import { Login } from "./pages/Login";
 import { Dashboard } from "./pages/Dashboard";
 import { ClientProfile } from "./pages/ClientProfile";
@@ -8,6 +8,8 @@ import { Messaging } from "./pages/Messaging";
 import { Reports } from "./pages/Reports";
 import { Schedule } from "./pages/Schedule";
 import { Sidebar } from "./components/Sidebar";
+
+const STORAGE_KEY = "hola_admin_session";
 
 interface AuthUser {
   id: string;
@@ -45,15 +47,33 @@ const PAGE_META: Record<string, { title: string; subtitle: string }> = {
   schedule: { title: "Schedule", subtitle: "Manage sessions and appointments" },
 };
 
+function loadStoredUser(): AuthUser | null {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? (JSON.parse(raw) as AuthUser) : null;
+  } catch {
+    return null;
+  }
+}
+
 export default function App() {
-  const [user, setUser] = useState<AuthUser | null>(null);
+  const [user, setUser] = useState<AuthUser | null>(loadStoredUser);
   const [page, setPage] = useState<Page>("dashboard");
+
+  const signIn = (u: AuthUser) => {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(u)); } catch {}
+    setUser(u);
+    setPage("dashboard");
+  };
+
+  const signOut = () => {
+    try { localStorage.removeItem(STORAGE_KEY); } catch {}
+    setUser(null);
+  };
 
   if (!user) {
     return (
-      <AuthContext.Provider
-        value={{ user, signIn: setUser, signOut: () => setUser(null) }}
-      >
+      <AuthContext.Provider value={{ user, signIn, signOut }}>
         <Login />
       </AuthContext.Provider>
     );
@@ -100,15 +120,21 @@ export default function App() {
   };
 
   return (
-    <AuthContext.Provider
-      value={{ user, signIn: setUser, signOut: () => setUser(null) }}
-    >
+    <AuthContext.Provider value={{ user, signIn, signOut }}>
       <div style={{ display: "flex", minHeight: "100vh", background: "var(--bg2)" }}>
         <Sidebar
           currentPage={typeof page === "string" ? page : "dashboard"}
           onNavigate={setPage}
         />
-        <main style={{ flex: 1, marginLeft: 220, minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+        <main
+          style={{
+            flex: 1,
+            marginLeft: 220,
+            minHeight: "100vh",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
           {/* Top page header bar */}
           {page !== "messaging" && (
             <div
@@ -152,7 +178,14 @@ export default function App() {
                 <span style={{ fontSize: 13, color: "var(--border)" }}>/</span>
               )}
               <div>
-                <div style={{ fontSize: 16, fontWeight: 700, color: "var(--fg)", lineHeight: 1.2 }}>
+                <div
+                  style={{
+                    fontSize: 16,
+                    fontWeight: 700,
+                    color: "var(--fg)",
+                    lineHeight: 1.2,
+                  }}
+                >
                   {meta.title}
                 </div>
                 <div style={{ fontSize: 12, color: "var(--muted)", marginTop: 2 }}>
@@ -163,9 +196,7 @@ export default function App() {
           )}
 
           {/* Page content */}
-          <div style={{ flex: 1 }}>
-            {renderPage()}
-          </div>
+          <div style={{ flex: 1 }}>{renderPage()}</div>
         </main>
       </div>
     </AuthContext.Provider>

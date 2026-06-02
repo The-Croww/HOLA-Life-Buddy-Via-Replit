@@ -1,5 +1,5 @@
 import { BlurView } from "expo-blur";
-import { Tabs } from "expo-router";
+import { Tabs, router } from "expo-router";
 import { Feather } from "@expo/vector-icons";
 import React, { useState, useEffect, useRef } from "react";
 import {
@@ -8,6 +8,8 @@ import {
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { DS } from "@/constants/design";
+import { AdminDrawer } from "@/components/AdminDrawer";
+
 const { width } = Dimensions.get("window");
 const ADMIN_ONBOARDING_KEY = "adminOnboardingDone_v1";
 const ACCENT = "#3DD68C";
@@ -65,7 +67,6 @@ function AdminOnboarding({ onDone }: { onDone: () => void }) {
             </View>
           )}
         />
-
         <View style={styles.dots}>
           {SLIDES.map((_, i) => (
             <View
@@ -77,13 +78,11 @@ function AdminOnboarding({ onDone }: { onDone: () => void }) {
             />
           ))}
         </View>
-
         <TouchableOpacity style={styles.nextBtn} onPress={advance} activeOpacity={0.82}>
           <Text style={styles.nextBtnText}>
             {index === SLIDES.length - 1 ? "Get started →" : "Next →"}
           </Text>
         </TouchableOpacity>
-
         {index === 0 && (
           <TouchableOpacity onPress={advance} style={{ marginTop: 4 }}>
             <Text style={styles.skipText}>Skip intro</Text>
@@ -99,6 +98,7 @@ export default function AdminTabLayout() {
   const isWeb = Platform.OS === "web";
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [checked, setChecked] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -117,13 +117,51 @@ export default function AdminTabLayout() {
 
   if (!checked) return null;
 
+  const headerLeft = () => (
+    <TouchableOpacity
+      onPress={() => setDrawerOpen(true)}
+      style={styles.headerBtn}
+      accessibilityLabel="Open menu"
+      hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+    >
+      <Feather name="menu" size={22} color={DS.colors.dark} />
+    </TouchableOpacity>
+  );
+
+  const headerRight = () => (
+    <TouchableOpacity
+      onPress={() => router.navigate("/(admin)/alerts" as any)}
+      style={styles.headerBtn}
+      accessibilityLabel="View alerts"
+      hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+    >
+      <Feather name="bell" size={22} color={DS.colors.dark} />
+    </TouchableOpacity>
+  );
+
   return (
     <View style={{ flex: 1 }}>
       <Tabs
         screenOptions={{
           tabBarActiveTintColor: DS.colors.dark,
           tabBarInactiveTintColor: DS.colors.muted,
-          headerShown: false,
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: DS.colors.background,
+            elevation: 0,
+            shadowOpacity: 0,
+            borderBottomWidth: 1,
+            borderBottomColor: DS.colors.border,
+          } as any,
+          headerTintColor: DS.colors.dark,
+          headerShadowVisible: false,
+          headerTitleStyle: {
+            fontFamily: DS.fonts.semibold,
+            fontSize: 16,
+            color: DS.colors.dark,
+          },
+          headerLeft,
+          headerRight,
           tabBarStyle: {
             position: "absolute",
             backgroundColor: isIOS ? "transparent" : DS.colors.background,
@@ -150,7 +188,7 @@ export default function AdminTabLayout() {
           options={{
             title: "Dashboard",
             tabBarIcon: ({ color }) => (
-              <Feather name="grid" size={22} color={color} accessibilityLabel="Dashboard tab" />
+              <Feather name="grid" size={22} color={color} />
             ),
           }}
         />
@@ -159,7 +197,7 @@ export default function AdminTabLayout() {
           options={{
             title: "Clients",
             tabBarIcon: ({ color }) => (
-              <Feather name="users" size={22} color={color} accessibilityLabel="Clients tab" />
+              <Feather name="users" size={22} color={color} />
             ),
           }}
         />
@@ -168,7 +206,7 @@ export default function AdminTabLayout() {
           options={{
             title: "Alerts",
             tabBarIcon: ({ color }) => (
-              <Feather name="bell" size={22} color={color} accessibilityLabel="Alerts tab" />
+              <Feather name="bell" size={22} color={color} />
             ),
           }}
         />
@@ -177,7 +215,7 @@ export default function AdminTabLayout() {
           options={{
             title: "Messages",
             tabBarIcon: ({ color }) => (
-              <Feather name="message-square" size={22} color={color} accessibilityLabel="Messages tab" />
+              <Feather name="message-square" size={22} color={color} />
             ),
           }}
         />
@@ -186,7 +224,7 @@ export default function AdminTabLayout() {
           options={{
             title: "Analytics",
             tabBarIcon: ({ color }) => (
-              <Feather name="bar-chart-2" size={22} color={color} accessibilityLabel="Analytics tab" />
+              <Feather name="bar-chart-2" size={22} color={color} />
             ),
           }}
         />
@@ -194,12 +232,13 @@ export default function AdminTabLayout() {
           name="profile"
           options={{
             title: "Profile",
-            tabBarIcon: ({ color }) => (
-              <Feather name="user" size={22} color={color} accessibilityLabel="Profile tab" />
-            ),
+            tabBarButton: () => null,
+            tabBarItemStyle: { display: "none" },
           }}
         />
       </Tabs>
+
+      <AdminDrawer visible={drawerOpen} onClose={() => setDrawerOpen(false)} />
 
       {showOnboarding && <AdminOnboarding onDone={handleOnboardingDone} />}
     </View>
@@ -207,6 +246,14 @@ export default function AdminTabLayout() {
 }
 
 const styles = StyleSheet.create({
+  headerBtn: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    minWidth: 44,
+    minHeight: 44,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   overlay: {
     backgroundColor: "rgba(0,0,0,0.55)",
     alignItems: "center",

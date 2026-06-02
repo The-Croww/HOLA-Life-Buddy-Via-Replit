@@ -56,7 +56,6 @@ export default function AdminAlertsScreen() {
     <SafeAreaView style={s.safe} edges={["top"]}>
       <View style={s.header}>
         <View>
-          <Text style={s.title}>Alerts</Text>
           {activeCount > 0 && <Text style={s.sub}>{activeCount} need attention</Text>}
         </View>
         <View style={[s.badge, activeCount === 0 && s.badgeGreen]}>

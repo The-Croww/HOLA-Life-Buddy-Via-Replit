@@ -95,7 +95,6 @@ export default function AdminAnalyticsScreen() {
   return (
     <SafeAreaView style={s.safe} edges={["top"]}>
       <ScrollView contentContainerStyle={s.content}>
-        <Text style={s.title}>Analytics</Text>
 
         <View style={s.row}>
           <StatCard emoji="👥" value={total} label="Total Clients" />

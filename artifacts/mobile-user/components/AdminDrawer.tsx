@@ -7,7 +7,6 @@ import {
   Animated,
   Dimensions,
   Modal,
-  Alert,
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -42,14 +41,9 @@ export function AdminDrawer({ visible, onClose }: AdminDrawerProps) {
     setTimeout(() => router.push(route as any), 240);
   };
 
-  const handleSignOut = () => {
+  const handleSignOut = async () => {
     onClose();
-    setTimeout(() => {
-      Alert.alert("Sign out", "Are you sure you want to sign out?", [
-        { text: "Cancel", style: "cancel" },
-        { text: "Sign out", style: "destructive", onPress: signOut },
-      ]);
-    }, 300);
+    await signOut();
   };
 
   const initial = (user?.name ?? "P").charAt(0).toUpperCase();

@@ -1,0 +1,119 @@
+Refactor the existing application UI/UX to match a premium Cosmos.so-inspired design system.
+
+IMPORTANT:
+
+* Do NOT modify business logic.
+* Do NOT modify database schemas.
+* Do NOT modify API endpoints.
+* Do NOT remove existing features.
+* Do NOT change application workflows.
+* Preserve all functionality exactly as it currently works.
+* Only improve visual design, layout, spacing, typography, colors, and component styling.
+
+DESIGN DIRECTION:
+
+* Modern Editorial Minimalism
+* Premium creative-tech aesthetic
+* Clean and spacious layouts
+* Content-first design
+* Elegant and sophisticated
+* Minimal visual noise
+* Professional startup quality
+* Apple-inspired polish
+* Consistent design language across all screens
+
+COLOR SYSTEM:
+
+Light Theme:
+Background: #FAFAFA
+Surface: #FFFFFF
+Primary Text: #0D0D0D
+Secondary Text: #666666
+Border: #EAEAEA
+Hover: #F5F5F5
+Accent: #1D4ED8
+
+Dark Theme:
+Background: #0D0D0D
+Surface: #161616
+Primary Text: #FFFFFF
+Secondary Text: #A0A0A0
+Border: #2A2A2A
+
+TYPOGRAPHY:
+
+* Use Inter font throughout the application
+* Font weights: 400, 500, 600, 700
+* Large editorial-style headings
+* Clean readable body text
+* Strong visual hierarchy
+* Generous line height
+
+SPACING SYSTEM:
+
+* Increase whitespace throughout the application
+* Consistent spacing scale
+* Reduce visual clutter
+* Improve content breathing room
+* Align components to a clear grid system
+
+COMPONENT UPDATES:
+
+Cards:
+
+* 24px border radius
+* Subtle borders
+* Minimal shadows
+* Clean modern appearance
+
+Buttons:
+
+* Pill-shaped radius
+* Smooth hover effects
+* Consistent sizing
+* Premium feel
+
+Forms:
+
+* 16px border radius
+* Clean inputs
+* Better focus states
+* Improved spacing
+
+Navigation:
+
+* Simplify visual appearance
+* Cleaner active states
+* Better spacing
+* More premium dashboard feel
+
+Tables:
+
+* Cleaner rows
+* Better spacing
+* Softer borders
+* Improved readability
+
+Dashboards:
+
+* Modern KPI cards
+* Better visual hierarchy
+* Spacious layouts
+* Elegant data presentation
+
+ANIMATIONS:
+
+* Smooth 200–300ms transitions
+* Subtle hover interactions
+* Gentle page transitions
+* No excessive animations
+* Maintain professional feel
+
+RESPONSIVENESS:
+
+* Preserve existing responsive behavior
+* Improve mobile experience where needed
+* Ensure consistency across devices
+
+GOAL:
+Make the application feel like a premium modern SaaS product inspired by Cosmos.so while keeping all existing functionality unchanged.

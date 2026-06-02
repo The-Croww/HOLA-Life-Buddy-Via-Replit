@@ -119,10 +119,10 @@ export function Dashboard({
   ];
 
   return (
-    <div style={{ padding: "24px 32px 40px" }}>
+    <div style={{ padding: "28px 32px 48px" }}>
 
       {/* Stats row */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 14, marginBottom: 24 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12, marginBottom: 24 }}>
         {stats.map((stat) => {
           const Icon = stat.icon;
           return (
@@ -131,34 +131,42 @@ export function Dashboard({
               style={{
                 background: "var(--bg)",
                 border: "1px solid var(--border)",
-                borderRadius: 12,
-                padding: "18px 20px",
+                borderRadius: 16,
+                padding: "20px 22px",
                 display: "flex",
-                alignItems: "center",
+                alignItems: "flex-start",
                 gap: 14,
                 boxShadow: "var(--shadow-card)",
               }}
             >
               <div
                 style={{
-                  width: 42,
-                  height: 42,
+                  width: 38,
+                  height: 38,
                   borderRadius: 10,
                   background: stat.bg,
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
                   flexShrink: 0,
-                  border: `1px solid ${stat.color}22`,
+                  border: `1px solid ${stat.color}18`,
                 }}
               >
-                <Icon size={18} color={stat.color} />
+                <Icon size={16} color={stat.color} strokeWidth={2} />
               </div>
               <div>
-                <div style={{ fontSize: 24, fontWeight: 700, color: "var(--fg)", lineHeight: 1 }}>
+                <div
+                  style={{
+                    fontSize: 26,
+                    fontWeight: 700,
+                    color: "var(--fg)",
+                    lineHeight: 1,
+                    letterSpacing: "-0.04em",
+                  }}
+                >
                   {stat.value}
                 </div>
-                <div style={{ fontSize: 12, color: "var(--muted)", marginTop: 4 }}>
+                <div style={{ fontSize: 12, color: "var(--muted)", marginTop: 5, letterSpacing: "-0.01em" }}>
                   {stat.label}
                 </div>
               </div>
@@ -172,7 +180,7 @@ export function Dashboard({
         style={{
           background: "var(--bg)",
           border: "1px solid var(--border)",
-          borderRadius: 14,
+          borderRadius: 16,
           boxShadow: "var(--shadow-card)",
           overflow: "hidden",
         }}
@@ -185,13 +193,21 @@ export function Dashboard({
             gap: 10,
             padding: "16px 20px",
             borderBottom: "1px solid var(--border)",
-            background: "var(--bg)",
           }}
         >
           <div style={{ flex: 1 }}>
-            <div style={{ fontSize: 14, fontWeight: 600, color: "var(--fg)" }}>All clients</div>
+            <div
+              style={{
+                fontSize: 14,
+                fontWeight: 600,
+                color: "var(--fg)",
+                letterSpacing: "-0.02em",
+              }}
+            >
+              All clients
+            </div>
             <div style={{ fontSize: 12, color: "var(--muted)", marginTop: 1 }}>
-              {loading ? "Loading…" : `${filtered.length} of ${clients.length}`}
+              {loading ? "Loading…" : `${filtered.length} of ${clients.length} clients`}
             </div>
           </div>
           <div style={{ position: "relative" }}>
@@ -203,6 +219,7 @@ export function Dashboard({
                 top: "50%",
                 transform: "translateY(-50%)",
                 color: "var(--muted)",
+                pointerEvents: "none",
               }}
             />
             <input
@@ -211,15 +228,18 @@ export function Dashboard({
                 borderRadius: 8,
                 border: "1px solid var(--border)",
                 fontSize: 13,
-                fontFamily: "Inter, sans-serif",
+                fontFamily: "inherit",
                 outline: "none",
                 background: "var(--bg2)",
                 color: "var(--fg)",
                 width: 200,
+                letterSpacing: "-0.01em",
               }}
               placeholder="Search clients…"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
+              onFocus={(e) => (e.currentTarget.style.borderColor = "#0d0d0d")}
+              onBlur={(e) => (e.currentTarget.style.borderColor = "var(--border)")}
             />
           </div>
           <button
@@ -235,6 +255,8 @@ export function Dashboard({
               cursor: "pointer",
             }}
             title="Refresh"
+            onMouseEnter={(e) => (e.currentTarget.style.background = "var(--bg2)")}
+            onMouseLeave={(e) => (e.currentTarget.style.background = "none")}
           >
             <RefreshCw size={13} />
           </button>
@@ -246,16 +268,21 @@ export function Dashboard({
               alignItems: "center",
               gap: 6,
               padding: "7px 14px",
-              borderRadius: 8,
-              background: "#0a0a0a",
+              borderRadius: 9999,
+              background: "#0d0d0d",
               color: "#fff",
               border: "none",
               fontSize: 13,
               fontWeight: 500,
               cursor: generatingCode ? "wait" : "pointer",
-              fontFamily: "Inter, sans-serif",
-              opacity: generatingCode ? 0.7 : 1,
+              fontFamily: "inherit",
+              opacity: generatingCode ? 0.6 : 1,
+              letterSpacing: "-0.01em",
             }}
+            onMouseEnter={(e) => {
+              if (!generatingCode) e.currentTarget.style.background = "#1a1a1a";
+            }}
+            onMouseLeave={(e) => (e.currentTarget.style.background = "#0d0d0d")}
           >
             <UserPlus size={13} />
             {generatingCode ? "Generating…" : "Add client"}
@@ -264,43 +291,51 @@ export function Dashboard({
 
         {/* Table content */}
         {loading ? (
-          <div style={{ padding: 48, textAlign: "center", color: "var(--muted)", fontSize: 13 }}>
+          <div style={{ padding: 56, textAlign: "center", color: "var(--muted)", fontSize: 13 }}>
             Loading clients…
           </div>
         ) : clients.length === 0 ? (
           <div
             style={{
-              padding: 56,
+              padding: "64px 48px",
               textAlign: "center",
               color: "var(--muted)",
-              background: "var(--bg2)",
             }}
           >
             <div
               style={{
-                width: 56,
-                height: 56,
-                borderRadius: "50%",
-                background: "var(--bg3)",
+                width: 52,
+                height: 52,
+                borderRadius: 14,
+                background: "var(--bg2)",
+                border: "1px solid var(--border)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
                 margin: "0 auto 16px",
               }}
             >
-              <Users size={24} strokeWidth={1.5} color="var(--muted)" />
+              <Users size={22} strokeWidth={1.5} color="var(--muted)" />
             </div>
-            <div style={{ fontWeight: 600, marginBottom: 6, color: "var(--fg)", fontSize: 15 }}>
+            <div
+              style={{
+                fontWeight: 600,
+                marginBottom: 6,
+                color: "var(--fg)",
+                fontSize: 15,
+                letterSpacing: "-0.02em",
+              }}
+            >
               No clients linked yet
             </div>
-            <div style={{ fontSize: 13, maxWidth: 280, margin: "0 auto" }}>
+            <div style={{ fontSize: 13, maxWidth: 280, margin: "0 auto", lineHeight: 1.6 }}>
               Click <strong>Add client</strong> to generate a link code and share it with your client.
             </div>
           </div>
         ) : (
           <table style={{ width: "100%", borderCollapse: "collapse" }}>
             <thead>
-              <tr style={{ background: "var(--bg2)", borderBottom: "1px solid var(--border)" }}>
+              <tr style={{ borderBottom: "1px solid var(--border)" }}>
                 {["Client", "Last check-in", "Avg mood", "Trend", "Emotions", "Risk", ""].map((h) => (
                   <th
                     key={h}
@@ -309,9 +344,10 @@ export function Dashboard({
                       fontSize: 11,
                       fontWeight: 600,
                       color: "var(--muted)",
-                      padding: "10px 16px",
+                      padding: "10px 18px",
                       textTransform: "uppercase",
-                      letterSpacing: "0.05em",
+                      letterSpacing: "0.07em",
+                      background: "var(--bg2)",
                     }}
                   >
                     {h}
@@ -326,60 +362,90 @@ export function Dashboard({
                   style={{
                     borderBottom: i < filtered.length - 1 ? "1px solid var(--border)" : "none",
                     background: "var(--bg)",
-                    transition: "background 0.1s",
                   }}
-                  onMouseEnter={(e) => (e.currentTarget.style.background = "var(--bg2)")}
+                  onMouseEnter={(e) => (e.currentTarget.style.background = "#fafafa")}
                   onMouseLeave={(e) => (e.currentTarget.style.background = "var(--bg)")}
                 >
-                  <td style={{ padding: "13px 16px" }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                  <td style={{ padding: "14px 18px" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 11 }}>
                       <div
                         style={{
                           width: 34,
                           height: 34,
                           borderRadius: "50%",
-                          background: "#0a0a0a",
+                          background: "#0d0d0d",
                           color: "#fff",
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "center",
                           fontSize: 12,
-                          fontWeight: 700,
+                          fontWeight: 600,
                           flexShrink: 0,
+                          letterSpacing: "-0.01em",
                         }}
                       >
                         {client.name.charAt(0)}
                       </div>
                       <div>
-                        <div style={{ fontSize: 14, fontWeight: 500, color: "var(--fg)" }}>
+                        <div
+                          style={{
+                            fontSize: 13,
+                            fontWeight: 500,
+                            color: "var(--fg)",
+                            letterSpacing: "-0.01em",
+                          }}
+                        >
                           {client.name}
                         </div>
-                        <div style={{ fontSize: 11, color: "var(--muted)" }}>{client.email}</div>
+                        <div style={{ fontSize: 11, color: "var(--muted)", marginTop: 1 }}>
+                          {client.email}
+                        </div>
                       </div>
                     </div>
                   </td>
-                  <td style={{ padding: "13px 16px", fontSize: 13, color: client.lastCheckin === "Today" ? "var(--calm)" : "var(--muted)", fontWeight: client.lastCheckin === "Today" ? 500 : 400 }}>
+                  <td style={{ padding: "14px 18px", fontSize: 13, color: client.lastCheckin === "Today" ? "var(--calm)" : "var(--muted)", fontWeight: client.lastCheckin === "Today" ? 500 : 400 }}>
                     {client.lastCheckin === "Today" && (
-                      <span style={{ display: "inline-block", width: 6, height: 6, borderRadius: "50%", background: "var(--calm)", marginRight: 6, verticalAlign: "middle" }} />
+                      <span
+                        style={{
+                          display: "inline-block",
+                          width: 6,
+                          height: 6,
+                          borderRadius: "50%",
+                          background: "var(--calm)",
+                          marginRight: 6,
+                          verticalAlign: "middle",
+                        }}
+                      />
                     )}
                     {client.lastCheckin}
                   </td>
-                  <td style={{ padding: "13px 16px", fontSize: 13 }}>
-                    <span style={{ fontWeight: 700, color: client.avgMood >= 7 ? "var(--calm)" : client.avgMood >= 4 ? "var(--warning)" : "var(--alert)" }}>
+                  <td style={{ padding: "14px 18px", fontSize: 13 }}>
+                    <span
+                      style={{
+                        fontWeight: 700,
+                        color:
+                          client.avgMood >= 7
+                            ? "var(--calm)"
+                            : client.avgMood >= 4
+                            ? "var(--warning)"
+                            : "var(--alert)",
+                        letterSpacing: "-0.02em",
+                      }}
+                    >
                       {client.avgMood}
                     </span>
                     <span style={{ color: "var(--muted)", fontSize: 11 }}>/10</span>
                   </td>
-                  <td style={{ padding: "13px 16px" }}>
+                  <td style={{ padding: "14px 18px" }}>
                     {client.trend === "up" ? (
-                      <TrendingUp size={16} color="var(--calm)" />
+                      <TrendingUp size={15} color="var(--calm)" />
                     ) : client.trend === "down" ? (
-                      <TrendingDown size={16} color="var(--alert)" />
+                      <TrendingDown size={15} color="var(--alert)" />
                     ) : (
-                      <Minus size={16} color="var(--muted)" />
+                      <Minus size={15} color="var(--muted)" />
                     )}
                   </td>
-                  <td style={{ padding: "13px 16px" }}>
+                  <td style={{ padding: "14px 18px" }}>
                     <div style={{ display: "flex", gap: 4, flexWrap: "wrap" }}>
                       {client.emotions.length > 0 ? (
                         client.emotions.slice(0, 3).map((e) => (
@@ -387,11 +453,12 @@ export function Dashboard({
                             key={e}
                             style={{
                               fontSize: 11,
-                              padding: "2px 7px",
-                              borderRadius: 99,
+                              padding: "2px 8px",
+                              borderRadius: 9999,
                               background: "var(--bg2)",
                               color: "var(--muted)",
                               border: "1px solid var(--border)",
+                              letterSpacing: "-0.01em",
                             }}
                           >
                             {e}
@@ -402,25 +469,26 @@ export function Dashboard({
                       )}
                     </div>
                   </td>
-                  <td style={{ padding: "13px 16px" }}>
+                  <td style={{ padding: "14px 18px" }}>
                     <span
                       style={{
                         display: "inline-flex",
                         alignItems: "center",
                         padding: "3px 10px",
-                        borderRadius: 99,
+                        borderRadius: 9999,
                         fontSize: 11,
                         fontWeight: 600,
                         background: RISK_BG[client.risk],
                         color: RISK_COLORS[client.risk],
-                        border: `1px solid ${RISK_COLORS[client.risk]}44`,
+                        border: `1px solid ${RISK_COLORS[client.risk]}33`,
                         textTransform: "capitalize",
+                        letterSpacing: "0.02em",
                       }}
                     >
                       {client.risk}
                     </span>
                   </td>
-                  <td style={{ padding: "13px 16px" }}>
+                  <td style={{ padding: "14px 18px" }}>
                     <button
                       onClick={() => onViewClient(client.id, client.name)}
                       style={{
@@ -428,18 +496,26 @@ export function Dashboard({
                         alignItems: "center",
                         gap: 5,
                         padding: "5px 12px",
-                        borderRadius: 7,
+                        borderRadius: 9999,
                         border: "1px solid var(--border)",
                         background: "none",
                         cursor: "pointer",
                         fontSize: 12,
-                        fontFamily: "Inter, sans-serif",
+                        fontFamily: "inherit",
                         color: "var(--fg)",
                         fontWeight: 500,
-                        transition: "all 0.1s",
+                        letterSpacing: "-0.01em",
                       }}
-                      onMouseEnter={(e) => { e.currentTarget.style.background = "var(--fg)"; e.currentTarget.style.color = "var(--bg)"; }}
-                      onMouseLeave={(e) => { e.currentTarget.style.background = "none"; e.currentTarget.style.color = "var(--fg)"; }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background = "#0d0d0d";
+                        e.currentTarget.style.color = "#fff";
+                        e.currentTarget.style.borderColor = "#0d0d0d";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background = "none";
+                        e.currentTarget.style.color = "var(--fg)";
+                        e.currentTarget.style.borderColor = "var(--border)";
+                      }}
                     >
                       <Eye size={12} />
                       View
@@ -458,12 +534,12 @@ export function Dashboard({
           style={{
             position: "fixed",
             inset: 0,
-            background: "rgba(0,0,0,0.5)",
+            background: "rgba(0,0,0,0.4)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             zIndex: 50,
-            backdropFilter: "blur(2px)",
+            backdropFilter: "blur(4px)",
           }}
           onClick={() => setShowCodeModal(false)}
         >
@@ -471,18 +547,18 @@ export function Dashboard({
             style={{
               background: "var(--bg)",
               border: "1px solid var(--border)",
-              borderRadius: 18,
+              borderRadius: 20,
               padding: 36,
-              width: 400,
+              width: 420,
               textAlign: "center",
-              boxShadow: "0 20px 60px rgba(0,0,0,0.15)",
+              boxShadow: "0 24px 64px rgba(0,0,0,0.14)",
             }}
             onClick={(e) => e.stopPropagation()}
           >
             <div
               style={{
-                width: 52,
-                height: 52,
+                width: 48,
+                height: 48,
                 borderRadius: 14,
                 background: "#f0fdf4",
                 border: "1px solid #a7f3d0",
@@ -490,24 +566,31 @@ export function Dashboard({
                 alignItems: "center",
                 justifyContent: "center",
                 margin: "0 auto 16px",
-                fontSize: 24,
+                fontSize: 22,
               }}
             >
               🔗
             </div>
-            <div style={{ fontSize: 18, fontWeight: 700, marginBottom: 6, color: "var(--fg)" }}>
+            <div
+              style={{
+                fontSize: 18,
+                fontWeight: 700,
+                marginBottom: 6,
+                color: "var(--fg)",
+                letterSpacing: "-0.03em",
+              }}
+            >
               Client Link Code
             </div>
             <div style={{ fontSize: 13, color: "var(--muted)", marginBottom: 24, lineHeight: 1.6 }}>
               Share this code with your client. They enter it in their Profile screen to link with you. Expires in 24 hours.
             </div>
 
-            {/* Code display */}
             <div
               style={{
                 background: "var(--bg2)",
-                border: "2px dashed var(--border)",
-                borderRadius: 12,
+                border: "1px dashed var(--border)",
+                borderRadius: 14,
                 padding: "20px 24px",
                 marginBottom: 16,
                 display: "flex",
@@ -518,9 +601,9 @@ export function Dashboard({
             >
               <span
                 style={{
-                  fontSize: 30,
+                  fontSize: 28,
                   fontWeight: 800,
-                  letterSpacing: "0.2em",
+                  letterSpacing: "0.18em",
                   fontFamily: "monospace",
                   color: "var(--fg)",
                 }}
@@ -533,16 +616,15 @@ export function Dashboard({
                   display: "flex",
                   alignItems: "center",
                   gap: 5,
-                  padding: "8px 14px",
-                  borderRadius: 8,
+                  padding: "7px 14px",
+                  borderRadius: 9999,
                   border: "1px solid var(--border)",
                   background: copied ? "#f0fdf4" : "var(--bg)",
                   cursor: "pointer",
                   fontSize: 12,
-                  fontFamily: "Inter, sans-serif",
+                  fontFamily: "inherit",
                   color: copied ? "var(--calm)" : "var(--fg)",
                   fontWeight: 500,
-                  transition: "all 0.15s",
                 }}
               >
                 {copied ? <Check size={13} /> : <Copy size={13} />}
@@ -554,15 +636,18 @@ export function Dashboard({
               style={{
                 width: "100%",
                 padding: "11px",
-                borderRadius: 10,
-                background: "#0a0a0a",
+                borderRadius: 9999,
+                background: "#0d0d0d",
                 color: "#fff",
                 border: "none",
                 fontSize: 14,
                 fontWeight: 600,
                 cursor: "pointer",
-                fontFamily: "Inter, sans-serif",
+                fontFamily: "inherit",
+                letterSpacing: "-0.01em",
               }}
+              onMouseEnter={(e) => (e.currentTarget.style.background = "#1a1a1a")}
+              onMouseLeave={(e) => (e.currentTarget.style.background = "#0d0d0d")}
             >
               Done
             </button>

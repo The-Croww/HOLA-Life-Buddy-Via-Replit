@@ -31,7 +31,7 @@ const ENGAGEMENT = [
 const card: React.CSSProperties = {
   background: "var(--bg)",
   border: "1px solid var(--border)",
-  borderRadius: 14,
+  borderRadius: 16,
   boxShadow: "var(--shadow-card)",
 };
 
@@ -54,7 +54,7 @@ function SectionHeading({ children }: { children: React.ReactNode }) {
 
 export function Analytics() {
   return (
-    <div style={{ padding: "24px 32px 40px", display: "flex", flexDirection: "column", gap: 24 }}>
+    <div style={{ padding: "28px 32px 48px", display: "flex", flexDirection: "column", gap: 24 }}>
 
       {/* Key metrics */}
       <div>

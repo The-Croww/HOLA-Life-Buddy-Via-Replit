@@ -37,6 +37,16 @@ router.post(
         return res.status(400).json({ error: "messages array is required" });
       }
 
+      if (!process.env.GROQ_API_KEY) {
+        return res.json({
+          message: {
+            role: "assistant",
+            content:
+              "Hi! I'm HOLA Buddy. I'm not fully set up yet, but I'm here to support you. Try journaling your thoughts or taking a few deep breaths — I'll be ready to chat soon! 💚",
+          },
+        });
+      }
+
       const response = await fetch(GROQ_API_URL, {
         method: "POST",
         headers: {

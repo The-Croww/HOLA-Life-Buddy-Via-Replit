@@ -40,176 +40,281 @@ export function Login() {
   };
 
   return (
-    <div style={styles.wrap}>
-      <div style={styles.card}>
-        {/* Logo */}
-        <img src={logoImg} alt="HOLA! Logo" style={styles.logoImg} />
+    <div
+      style={{
+        minHeight: "100vh",
+        display: "flex",
+        background: "#fafafa",
+      }}
+    >
+      {/* Left panel */}
+      <div
+        style={{
+          flex: 1,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "48px 40px",
+        }}
+      >
+        <div style={{ width: "100%", maxWidth: 360 }}>
+          {/* Logo + brand */}
+          <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 48 }}>
+            <img
+              src={logoImg}
+              alt="HOLA!"
+              style={{ width: 36, height: 36, borderRadius: 8, objectFit: "contain", background: "#0d0d0d" }}
+            />
+            <div>
+              <div style={{ fontSize: 15, fontWeight: 700, color: "#0d0d0d", letterSpacing: "-0.02em", lineHeight: 1 }}>
+                HOLA!
+              </div>
+              <div style={{ fontSize: 11, color: "#999", marginTop: 2 }}>Clinician Portal</div>
+            </div>
+          </div>
 
-        <div style={styles.heading}>HOLA!</div>
-        <div style={styles.sub}>Clinician Portal</div>
+          <div style={{ marginBottom: 32 }}>
+            <h1
+              style={{
+                fontSize: 28,
+                fontWeight: 700,
+                color: "#0d0d0d",
+                letterSpacing: "-0.04em",
+                lineHeight: 1.1,
+                marginBottom: 8,
+              }}
+            >
+              Welcome back
+            </h1>
+            <p style={{ fontSize: 14, color: "#666", lineHeight: 1.5 }}>
+              Sign in to your clinician dashboard
+            </p>
+          </div>
 
-        {error && <div style={styles.error}>{error}</div>}
+          {error && (
+            <div
+              style={{
+                padding: "10px 14px",
+                borderRadius: 10,
+                background: "#fef2f2",
+                border: "1px solid #fecaca",
+                color: "#dc2626",
+                fontSize: 13,
+                marginBottom: 20,
+                lineHeight: 1.4,
+              }}
+            >
+              {error}
+            </div>
+          )}
 
-        {/* Email */}
-        <div style={styles.inputWrap}>
-          <input
-            style={styles.input}
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Email"
-            onKeyDown={(e) => e.key === "Enter" && handleLogin()}
-          />
-        </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+            <div>
+              <label
+                style={{
+                  display: "block",
+                  fontSize: 12,
+                  fontWeight: 500,
+                  color: "#444",
+                  marginBottom: 6,
+                  letterSpacing: "-0.01em",
+                }}
+              >
+                Email
+              </label>
+              <input
+                style={{
+                  width: "100%",
+                  padding: "11px 14px",
+                  borderRadius: 10,
+                  border: "1px solid #e5e5e5",
+                  background: "#fff",
+                  color: "#0d0d0d",
+                  fontSize: 14,
+                  fontFamily: "inherit",
+                  outline: "none",
+                  boxSizing: "border-box" as const,
+                  letterSpacing: "-0.01em",
+                }}
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="you@clinic.com"
+                onKeyDown={(e) => e.key === "Enter" && handleLogin()}
+                onFocus={(e) => (e.currentTarget.style.borderColor = "#0d0d0d")}
+                onBlur={(e) => (e.currentTarget.style.borderColor = "#e5e5e5")}
+              />
+            </div>
 
-        {/* Password with eye toggle */}
-        <div style={{ ...styles.inputWrap, position: "relative" }}>
-          <input
-            style={{ ...styles.input, paddingRight: 44 }}
-            type={showPassword ? "text" : "password"}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Password"
-            onKeyDown={(e) => e.key === "Enter" && handleLogin()}
-          />
+            <div>
+              <label
+                style={{
+                  display: "block",
+                  fontSize: 12,
+                  fontWeight: 500,
+                  color: "#444",
+                  marginBottom: 6,
+                  letterSpacing: "-0.01em",
+                }}
+              >
+                Password
+              </label>
+              <div style={{ position: "relative" }}>
+                <input
+                  style={{
+                    width: "100%",
+                    padding: "11px 42px 11px 14px",
+                    borderRadius: 10,
+                    border: "1px solid #e5e5e5",
+                    background: "#fff",
+                    color: "#0d0d0d",
+                    fontSize: 14,
+                    fontFamily: "inherit",
+                    outline: "none",
+                    boxSizing: "border-box" as const,
+                    letterSpacing: "-0.01em",
+                  }}
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                  onKeyDown={(e) => e.key === "Enter" && handleLogin()}
+                  onFocus={(e) => (e.currentTarget.style.borderColor = "#0d0d0d")}
+                  onBlur={(e) => (e.currentTarget.style.borderColor = "#e5e5e5")}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((v) => !v)}
+                  style={{
+                    position: "absolute",
+                    right: 12,
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                    background: "none",
+                    border: "none",
+                    cursor: "pointer",
+                    color: "#aaa",
+                    display: "flex",
+                    alignItems: "center",
+                    padding: 0,
+                  }}
+                  tabIndex={-1}
+                >
+                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                </button>
+              </div>
+            </div>
+          </div>
+
           <button
-            type="button"
-            onClick={() => setShowPassword((v) => !v)}
             style={{
-              position: "absolute",
-              right: 12,
-              top: "50%",
-              transform: "translateY(-50%)",
-              background: "none",
+              width: "100%",
+              padding: "12px",
+              borderRadius: 10,
+              background: "#0d0d0d",
+              color: "#ffffff",
               border: "none",
-              cursor: "pointer",
-              color: "#9ca3af",
-              display: "flex",
-              alignItems: "center",
-              padding: 0,
+              fontSize: 14,
+              fontWeight: 600,
+              cursor: loading || !email || !password ? "not-allowed" : "pointer",
+              fontFamily: "inherit",
+              marginTop: 20,
+              letterSpacing: "-0.01em",
+              opacity: loading || !email || !password ? 0.5 : 1,
             }}
-            tabIndex={-1}
-            aria-label={showPassword ? "Hide password" : "Show password"}
+            onClick={handleLogin}
+            disabled={loading || !email || !password}
+            onMouseEnter={(e) => {
+              if (!loading && email && password) e.currentTarget.style.background = "#1a1a1a";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = "#0d0d0d";
+            }}
           >
-            {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+            {loading ? "Signing in…" : "Sign in"}
           </button>
+
+          <p
+            style={{
+              fontSize: 12,
+              color: "#999",
+              textAlign: "center",
+              marginTop: 24,
+              lineHeight: 1.5,
+            }}
+          >
+            Don't have an account? Contact your administrator.
+          </p>
         </div>
+      </div>
 
-        <button
-          style={{
-            ...styles.btn,
-            opacity: loading || !email || !password ? 0.6 : 1,
-          }}
-          onClick={handleLogin}
-          disabled={loading || !email || !password}
-        >
-          {loading ? "Logging in…" : "Log in"}
-        </button>
+      {/* Right panel — decorative */}
+      <div
+        style={{
+          width: 480,
+          background: "#0d0d0d",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: 48,
+          flexShrink: 0,
+        }}
+      >
+        <div style={{ textAlign: "center" }}>
+          <div style={{ fontSize: 48, marginBottom: 24 }}>💚</div>
+          <div
+            style={{
+              fontSize: 22,
+              fontWeight: 700,
+              color: "#ffffff",
+              letterSpacing: "-0.04em",
+              lineHeight: 1.2,
+              marginBottom: 12,
+            }}
+          >
+            Supporting mental
+            <br />
+            wellness, together
+          </div>
+          <div style={{ fontSize: 13, color: "#555", lineHeight: 1.6, maxWidth: 280, margin: "0 auto" }}>
+            Track client wellbeing, review mood patterns, and provide better care — all from one place.
+          </div>
 
-        <div style={styles.divider}>
-          <span style={styles.dividerLine} />
-          <span style={styles.dividerText}>or</span>
-          <span style={styles.dividerLine} />
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 12,
+              marginTop: 40,
+              textAlign: "left",
+            }}
+          >
+            {[
+              { icon: "📊", label: "Real-time mood insights" },
+              { icon: "🔔", label: "Automated risk alerts" },
+              { icon: "💬", label: "Secure client messaging" },
+            ].map((item) => (
+              <div
+                key={item.label}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 12,
+                  padding: "12px 16px",
+                  borderRadius: 12,
+                  background: "#141414",
+                  border: "1px solid #1f1f1f",
+                }}
+              >
+                <span style={{ fontSize: 18 }}>{item.icon}</span>
+                <span style={{ fontSize: 13, color: "#888", letterSpacing: "-0.01em" }}>
+                  {item.label}
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
-
-        <div style={styles.hint}>Don't have an account? Ask your admin.</div>
       </div>
     </div>
   );
 }
-
-const styles: Record<string, React.CSSProperties> = {
-  wrap: {
-    minHeight: "100vh",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    background: "#ffffff",
-    fontFamily: "Inter, -apple-system, BlinkMacSystemFont, sans-serif",
-  },
-  card: {
-    background: "#ffffff",
-    width: 360,
-    padding: 40,
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  logoImg: {
-    width: 96,
-    height: 96,
-    objectFit: "contain",
-    marginBottom: 20,
-  },
-  heading: {
-    fontSize: 28,
-    fontWeight: 700,
-    color: "#0a0a0a",
-    marginBottom: 4,
-    letterSpacing: -0.5,
-  },
-  sub: {
-    fontSize: 14,
-    color: "#737373",
-    marginBottom: 32,
-  },
-  inputWrap: {
-    width: "100%",
-    marginBottom: 12,
-  },
-  input: {
-    width: "100%",
-    padding: "12px 16px",
-    borderRadius: 12,
-    border: "1px solid #dbdbdb",
-    background: "#fafafa",
-    color: "#0a0a0a",
-    fontSize: 14,
-    fontFamily: "Inter, sans-serif",
-    outline: "none",
-    boxSizing: "border-box",
-  },
-  btn: {
-    width: "100%",
-    padding: "12px",
-    borderRadius: 12,
-    background: "#0a0a0a",
-    color: "#ffffff",
-    border: "none",
-    fontSize: 14,
-    fontWeight: 600,
-    cursor: "pointer",
-    fontFamily: "Inter, sans-serif",
-    marginTop: 8,
-    transition: "opacity 0.2s",
-  },
-  error: {
-    color: "#ef4444",
-    fontSize: 13,
-    marginBottom: 16,
-    textAlign: "center",
-  },
-  divider: {
-    width: "100%",
-    display: "flex",
-    alignItems: "center",
-    gap: 12,
-    margin: "24px 0",
-  },
-  dividerLine: {
-    flex: 1,
-    height: 1,
-    background: "#dbdbdb",
-  },
-  dividerText: {
-    fontSize: 12,
-    color: "#737373",
-    textTransform: "uppercase",
-    letterSpacing: 1,
-  },
-  hint: {
-    fontSize: 12,
-    color: "#737373",
-    textAlign: "center",
-  },
-};

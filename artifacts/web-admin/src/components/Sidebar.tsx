@@ -5,7 +5,6 @@ import {
   BarChart2,
   MessageCircle,
   LogOut,
-  FileText,
   Calendar,
   ClipboardList,
 } from "lucide-react";
@@ -48,21 +47,22 @@ export function Sidebar({
   return (
     <aside
       style={{
-        width: 220,
+        width: 232,
         position: "fixed",
         top: 0,
         left: 0,
         height: "100vh",
-        background: "#111113",
+        background: "#0d0d0d",
         display: "flex",
         flexDirection: "column",
+        borderRight: "1px solid #1a1a1a",
       }}
     >
-      {/* Brand header */}
+      {/* Brand */}
       <div
         style={{
-          padding: "18px 16px 16px",
-          borderBottom: "1px solid #2a2a2e",
+          padding: "20px 20px 18px",
+          borderBottom: "1px solid #1f1f1f",
           display: "flex",
           alignItems: "center",
           gap: 10,
@@ -73,8 +73,8 @@ export function Sidebar({
           src={logoImg}
           alt="HOLA!"
           style={{
-            width: 34,
-            height: 34,
+            width: 32,
+            height: 32,
             borderRadius: 8,
             objectFit: "contain",
             flexShrink: 0,
@@ -82,10 +82,18 @@ export function Sidebar({
           }}
         />
         <div>
-          <div style={{ fontSize: 14, fontWeight: 700, color: "#fff", lineHeight: 1 }}>
+          <div
+            style={{
+              fontSize: 14,
+              fontWeight: 700,
+              color: "#ffffff",
+              lineHeight: 1.2,
+              letterSpacing: "-0.02em",
+            }}
+          >
             HOLA!
           </div>
-          <div style={{ fontSize: 11, color: "#888", marginTop: 2 }}>
+          <div style={{ fontSize: 11, color: "#555", marginTop: 2 }}>
             Clinician Portal
           </div>
         </div>
@@ -95,23 +103,22 @@ export function Sidebar({
       <nav
         style={{
           flex: 1,
-          padding: "12px 10px",
+          padding: "14px 10px",
           display: "flex",
           flexDirection: "column",
           overflowY: "auto",
-          gap: 4,
         }}
       >
-        {NAV_GROUPS.map((group) => (
-          <div key={group.label}>
+        {NAV_GROUPS.map((group, gi) => (
+          <div key={group.label} style={{ marginBottom: 4 }}>
             <div
               style={{
                 fontSize: 10,
-                fontWeight: 700,
-                color: "#555",
+                fontWeight: 600,
+                color: "#333",
                 textTransform: "uppercase",
-                letterSpacing: "0.08em",
-                padding: "10px 10px 6px",
+                letterSpacing: "0.1em",
+                padding: "8px 8px 5px",
               }}
             >
               {group.label}
@@ -119,55 +126,58 @@ export function Sidebar({
 
             {group.items.map(({ id, icon: Icon, label }) => {
               const active = currentPage === id;
-
               return (
                 <button
                   key={id}
                   onClick={() => onNavigate(id as Page)}
-                  onMouseEnter={(e) => {
-                    if (!active) e.currentTarget.style.background = "#1e1e22";
-                  }}
-                  onMouseLeave={(e) => {
-                    if (!active) e.currentTarget.style.background = "transparent";
-                  }}
                   style={{
                     display: "flex",
                     alignItems: "center",
-                    gap: 10,
+                    gap: 9,
                     width: "100%",
-                    padding: "9px 10px",
+                    padding: "8px 10px",
                     borderRadius: 8,
                     cursor: "pointer",
-                    background: active ? "#1e1e22" : "transparent",
-                    color: active ? "#fff" : "#999",
+                    background: active ? "#1a1a1a" : "transparent",
+                    color: active ? "#ffffff" : "#565656",
                     border: "none",
-                    borderLeft: active ? "2px solid #3DD68C" : "2px solid transparent",
                     fontSize: 13,
-                    fontWeight: active ? 600 : 400,
-                    fontFamily: "Inter, sans-serif",
-                    marginBottom: 2,
-                    transition: "all 0.1s ease",
+                    fontWeight: active ? 500 : 400,
+                    fontFamily: "inherit",
+                    marginBottom: 1,
                     textAlign: "left",
+                    letterSpacing: "-0.01em",
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!active) {
+                      e.currentTarget.style.background = "#161616";
+                      e.currentTarget.style.color = "#c0c0c0";
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!active) {
+                      e.currentTarget.style.background = "transparent";
+                      e.currentTarget.style.color = "#565656";
+                    }
                   }}
                 >
-                  <Icon size={16} strokeWidth={active ? 2.2 : 1.8} />
-                  {label}
+                  <Icon size={15} strokeWidth={active ? 2 : 1.75} style={{ flexShrink: 0 }} />
+                  <span style={{ flex: 1 }}>{label}</span>
 
                   {id === "alerts" && (
                     <span
                       style={{
-                        marginLeft: "auto",
-                        minWidth: 18,
-                        height: 18,
-                        borderRadius: 999,
+                        minWidth: 16,
+                        height: 16,
+                        borderRadius: 9999,
                         background: "#ef4444",
                         color: "#fff",
-                        fontSize: 10,
+                        fontSize: 9,
                         fontWeight: 700,
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        padding: "0 5px",
+                        padding: "0 4px",
                       }}
                     >
                       !
@@ -177,22 +187,24 @@ export function Sidebar({
               );
             })}
 
-            <div
-              style={{
-                height: 1,
-                background: "#2a2a2e",
-                margin: "8px 4px 2px",
-              }}
-            />
+            {gi < NAV_GROUPS.length - 1 && (
+              <div
+                style={{
+                  height: 1,
+                  background: "#1a1a1a",
+                  margin: "10px 4px 6px",
+                }}
+              />
+            )}
           </div>
         ))}
       </nav>
 
-      {/* User Section */}
+      {/* User section */}
       <div
         style={{
           padding: "12px",
-          borderTop: "1px solid #2a2a2e",
+          borderTop: "1px solid #1a1a1a",
           flexShrink: 0,
         }}
       >
@@ -200,52 +212,46 @@ export function Sidebar({
           style={{
             borderRadius: 10,
             padding: "10px 12px",
-            background: "#1a1a1e",
+            background: "#141414",
             marginBottom: 8,
+            display: "flex",
+            alignItems: "center",
+            gap: 10,
           }}
         >
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <div
+            style={{
+              width: 30,
+              height: 30,
+              borderRadius: "50%",
+              background: "#3DD68C",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontSize: 12,
+              fontWeight: 700,
+              color: "#0d0d0d",
+              flexShrink: 0,
+            }}
+          >
+            {user?.name?.charAt(0).toUpperCase()}
+          </div>
+          <div style={{ flex: 1, minWidth: 0 }}>
             <div
               style={{
-                width: 32,
-                height: 32,
-                borderRadius: "50%",
-                background: "#3DD68C",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
                 fontSize: 13,
-                fontWeight: 700,
-                color: "#fff",
-                flexShrink: 0,
+                fontWeight: 500,
+                color: "#e0e0e0",
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                letterSpacing: "-0.01em",
               }}
             >
-              {user?.name?.charAt(0).toUpperCase()}
+              {user?.name}
             </div>
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <div
-                style={{
-                  fontSize: 13,
-                  fontWeight: 600,
-                  color: "#f0f0f0",
-                  whiteSpace: "nowrap",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                }}
-              >
-                {user?.name}
-              </div>
-              <div
-                style={{
-                  fontSize: 11,
-                  color: "#666",
-                  whiteSpace: "nowrap",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                }}
-              >
-                Psychologist
-              </div>
+            <div style={{ fontSize: 11, color: "#444", marginTop: 1 }}>
+              Psychologist
             </div>
           </div>
         </div>
@@ -256,23 +262,27 @@ export function Sidebar({
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            gap: 8,
+            gap: 7,
             width: "100%",
-            padding: "9px 12px",
+            padding: "8px 12px",
             borderRadius: 8,
             background: "transparent",
-            border: "1px solid #2a2a2e",
+            border: "1px solid #1f1f1f",
             cursor: "pointer",
             color: "#ef4444",
             fontSize: 13,
             fontWeight: 500,
-            fontFamily: "Inter, sans-serif",
-            transition: "all 0.12s ease",
+            fontFamily: "inherit",
+            letterSpacing: "-0.01em",
           }}
-          onMouseEnter={(e) => (e.currentTarget.style.background = "#2a1515")}
-          onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+          onMouseEnter={(e) =>
+            (e.currentTarget.style.background = "#1a0a0a")
+          }
+          onMouseLeave={(e) =>
+            (e.currentTarget.style.background = "transparent")
+          }
         >
-          <LogOut size={14} />
+          <LogOut size={13} />
           Sign out
         </button>
       </div>

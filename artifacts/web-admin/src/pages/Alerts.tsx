@@ -118,7 +118,7 @@ export function Alerts({
   const pending = alerts.filter((a) => !a.reviewed);
 
   return (
-    <div style={{ padding: "24px 32px 40px", display: "flex", flexDirection: "column", gap: 24 }}>
+    <div style={{ padding: "28px 32px 48px", display: "flex", flexDirection: "column", gap: 24 }}>
 
       {/* Live status bar */}
       <div
@@ -128,8 +128,8 @@ export function Alerts({
           justifyContent: "space-between",
           background: "var(--bg)",
           border: "1px solid var(--border)",
-          borderRadius: 12,
-          padding: "14px 20px",
+          borderRadius: 16,
+          padding: "16px 20px",
           boxShadow: "var(--shadow-card)",
         }}
       >
@@ -321,14 +321,15 @@ function AlertCard({
               alignItems: "center",
               gap: 5,
               padding: "6px 12px",
-              borderRadius: 7,
+              borderRadius: 9999,
               border: "1px solid var(--border)",
-              background: "#0a0a0a",
+              background: "#0d0d0d",
               color: "#fff",
               fontSize: 12,
               cursor: "pointer",
-              fontFamily: "Inter, sans-serif",
+              fontFamily: "inherit",
               fontWeight: 500,
+              letterSpacing: "-0.01em",
             }}
           >
             <Eye size={12} /> View client
@@ -341,14 +342,15 @@ function AlertCard({
                 alignItems: "center",
                 gap: 5,
                 padding: "6px 12px",
-                borderRadius: 7,
+                borderRadius: 9999,
                 border: "1px solid var(--border)",
                 background: "none",
                 color: "var(--fg)",
                 fontSize: 12,
                 cursor: "pointer",
-                fontFamily: "Inter, sans-serif",
+                fontFamily: "inherit",
                 fontWeight: 500,
+                letterSpacing: "-0.01em",
               }}
             >
               <CheckCircle size={12} /> Mark reviewed

@@ -129,7 +129,7 @@ export default function App() {
         <main
           style={{
             flex: 1,
-            marginLeft: 220,
+            marginLeft: 232,
             minHeight: "100vh",
             display: "flex",
             flexDirection: "column",
@@ -143,13 +143,12 @@ export default function App() {
                 top: 0,
                 zIndex: 10,
                 background: "var(--bg)",
-                borderBottom: "3px solid var(--border)",
-                borderTop: "3px solid #3DD68C",
-                padding: "14px 32px",
+                borderBottom: "1px solid var(--border)",
+                padding: "0 32px",
                 display: "flex",
                 alignItems: "center",
+                height: 56,
                 gap: 12,
-                boxShadow: "var(--shadow-sm)",
               }}
             >
               {isClient && (
@@ -158,18 +157,25 @@ export default function App() {
                   style={{
                     display: "flex",
                     alignItems: "center",
-                    gap: 6,
+                    gap: 5,
                     fontSize: 13,
                     color: "var(--muted)",
                     background: "none",
                     border: "none",
                     cursor: "pointer",
-                    padding: "4px 8px",
+                    padding: "5px 8px",
                     borderRadius: 6,
-                    fontFamily: "Inter, sans-serif",
+                    fontFamily: "inherit",
+                    letterSpacing: "-0.01em",
                   }}
-                  onMouseEnter={(e) => (e.currentTarget.style.background = "var(--bg2)")}
-                  onMouseLeave={(e) => (e.currentTarget.style.background = "none")}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = "var(--bg3)";
+                    e.currentTarget.style.color = "var(--fg)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = "none";
+                    e.currentTarget.style.color = "var(--muted)";
+                  }}
                 >
                   ← Clients
                 </button>
@@ -177,20 +183,23 @@ export default function App() {
               {isClient && (
                 <span style={{ fontSize: 13, color: "var(--border)" }}>/</span>
               )}
-              <div>
+              <div style={{ flex: 1 }}>
                 <div
                   style={{
-                    fontSize: 16,
-                    fontWeight: 700,
+                    fontSize: 15,
+                    fontWeight: 600,
                     color: "var(--fg)",
-                    lineHeight: 1.2,
+                    letterSpacing: "-0.02em",
+                    lineHeight: 1.3,
                   }}
                 >
                   {meta.title}
                 </div>
-                <div style={{ fontSize: 12, color: "var(--muted)", marginTop: 2 }}>
-                  {meta.subtitle}
-                </div>
+                {meta.subtitle && (
+                  <div style={{ fontSize: 12, color: "var(--muted)", marginTop: 1 }}>
+                    {meta.subtitle}
+                  </div>
+                )}
               </div>
             </div>
           )}

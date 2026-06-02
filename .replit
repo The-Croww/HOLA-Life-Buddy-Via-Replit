@@ -11,6 +11,59 @@ env = { "CI" = "true" }
 [workflows]
 runButton = "Project"
 
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "API Server"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Web Admin"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Mobile App"
+
+[[workflows.workflow]]
+name = "API Server"
+author = "agent"
+
+[workflows.workflow.metadata]
+outputType = "console"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "PORT=8080 pnpm --filter @workspace/api-server run dev"
+waitForPort = 8080
+
+[[workflows.workflow]]
+name = "Web Admin"
+author = "agent"
+
+[workflows.workflow.metadata]
+outputType = "webview"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "PORT=20595 BASE_PATH=/admin/ pnpm --filter @workspace/web-admin run dev"
+waitForPort = 20595
+
+[[workflows.workflow]]
+name = "Mobile App"
+author = "agent"
+
+[workflows.workflow.metadata]
+outputType = "webview"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "PORT=23106 pnpm --filter @workspace/mobile-user run dev"
+waitForPort = 23106
+
 [agent]
 stack = "PNPM_WORKSPACE"
 expertMode = true

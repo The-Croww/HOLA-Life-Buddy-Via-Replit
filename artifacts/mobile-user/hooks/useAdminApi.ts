@@ -3,7 +3,8 @@ import { useAuth } from "@/context/AuthContext";
 
 export function useAdminFetch() {
   const { token } = useAuth();
-  const baseUrl = `https://${process.env.EXPO_PUBLIC_DOMAIN}`;
+  const domain = process.env.EXPO_PUBLIC_DOMAIN;
+  const baseUrl = domain ? `https://${domain}` : "";
 
   const apiFetch = useCallback(
     async (path: string, options?: RequestInit) => {

@@ -57,7 +57,6 @@ export function CustomDrawer({ visible, onClose }: CustomDrawerProps) {
   const navItems = [
     { label: "Profile", icon: "user" as const, route: "/profile" },
     { label: "Settings", icon: "settings" as const, route: "/settings" },
-    { label: "Help & Support", icon: "help-circle" as const, route: "/help" },
   ];
 
   return (
@@ -79,6 +78,15 @@ export function CustomDrawer({ visible, onClose }: CustomDrawerProps) {
             },
           ]}
         >
+          {/* Back / Close button */}
+          <TouchableOpacity
+            style={[styles.backBtn, { marginTop: insets.top > 0 ? 0 : 8 }]}
+            onPress={onClose}
+            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+          >
+            <Feather name="arrow-left" size={22} color={colors.foreground} />
+          </TouchableOpacity>
+
           {/* User Header */}
           <View style={[styles.header, { borderBottomColor: colors.border }]}>
             <View style={[styles.avatar, { backgroundColor: colors.primary }]}>
@@ -149,8 +157,15 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     elevation: 10,
   },
+  backBtn: {
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    alignSelf: "flex-start",
+  },
   header: {
-    padding: 24,
+    paddingHorizontal: 24,
+    paddingBottom: 20,
+    paddingTop: 8,
     borderBottomWidth: 1,
     alignItems: "flex-start",
   },

@@ -21,10 +21,6 @@ function NativeTabLayout() {
         <Icon sf={{ default: "face.smiling", selected: "face.smiling.fill" }} />
         <Label>Mood</Label>
       </NativeTabs.Trigger>
-      <NativeTabs.Trigger name="journal">
-        <Icon sf={{ default: "book", selected: "book.fill" }} />
-        <Label>Journal</Label>
-      </NativeTabs.Trigger>
       <NativeTabs.Trigger name="chat">
         <Icon
           sf={{
@@ -119,12 +115,7 @@ function ClassicTabLayout() {
         name="journal"
         options={{
           title: "Journal",
-          tabBarIcon: ({ color }) =>
-            isIOS ? (
-              <SymbolView name="book" tintColor={color} size={24} />
-            ) : (
-              <Feather name="book-open" size={22} color={color} />
-            ),
+          href: null,
         }}
       />
       <Tabs.Screen

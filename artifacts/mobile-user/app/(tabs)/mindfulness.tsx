@@ -11,7 +11,8 @@ import {
 } from "react-native";
 import * as Haptics from "expo-haptics";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
+import { Feather } from "@expo/vector-icons";
 import { useColors } from "@/hooks/useColors";
 import { WorryBoxModal, GratitudeJarModal, ThoughtReframeModal, GroundingModal } from "@/components/cbt/CBTTools";
 import { useAchievements } from "@/hooks/useAchievements";
@@ -135,6 +136,7 @@ const BREATH_MODES = {
 export default function MindfulnessScreen() {
   const colors = useColors();
   const insets = useSafeAreaInsets();
+  const navigation = useRouter();
   const topPad = Platform.OS === "web" ? 67 : insets.top;
   const { tab: tabParam } = useLocalSearchParams<{ tab?: string }>();
   const { increment } = useAchievements();
@@ -532,6 +534,32 @@ export default function MindfulnessScreen() {
       fontFamily: "Inter_600SemiBold",
       color: colors.foreground,
     },
+    journalCard: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 14,
+      padding: 16,
+      borderRadius: 14,
+      borderWidth: 1,
+      marginBottom: 4,
+    },
+    journalIcon: {
+      width: 48,
+      height: 48,
+      borderRadius: 12,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    journalTitle: {
+      fontSize: 15,
+      fontFamily: "Inter_600SemiBold",
+      marginBottom: 3,
+    },
+    journalDesc: {
+      fontSize: 12,
+      fontFamily: "Inter_400Regular",
+      lineHeight: 17,
+    },
   });
 
   return (
@@ -769,6 +797,26 @@ export default function MindfulnessScreen() {
                 unhelpful thoughts, and build resilience.
               </Text>
             </View>
+
+            {/* Journal entry */}
+            <TouchableOpacity
+              style={[styles.journalCard, { backgroundColor: colors.card, borderColor: colors.border }]}
+              activeOpacity={0.75}
+              onPress={() => {
+                Haptics.selectionAsync();
+                navigation.push("/(tabs)/journal" as any);
+              }}
+            >
+              <View style={[styles.journalIcon, { backgroundColor: "#5B9CF622" }]}>
+                <Text style={{ fontSize: 26 }}>📓</Text>
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text style={[styles.journalTitle, { color: colors.foreground }]}>Journal</Text>
+                <Text style={[styles.journalDesc, { color: colors.mutedForeground }]}>Write, reflect, and share entries with your psychologist</Text>
+              </View>
+              <Feather name="chevron-right" size={18} color={colors.mutedForeground} />
+            </TouchableOpacity>
+
             <View style={styles.toolsGrid}>
               {TOOLS.map((tool) => {
                 const onPress = () => {

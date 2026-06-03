@@ -3,4 +3,4 @@
 - [Phase 4 features](phase4-features.md) — Phase 4 polish complete: enhanced onboarding, admin onboarding, empty states, mood score bounce, splash color, messages "Say hello 👋", register name prefill.
 - [Phase 4 bug fixes](phase4-bugfixes.md) — Eye icons, role-based sign-in redirects, user sidebar fix, admin drawer, alerts bell, web-admin localStorage persistence, index.tsx role guard, admin screen title dedup.
 - [TypeScript audit lessons](phase5-typescript-audit.md) — Express 5 req.params typing, expo-notifications v56 permission API, React 19 shadcn Ref conflict, fetch().json() is unknown.
-- [Expo Replit QR + Hermes setup](expo-replit-setup.md) — QR scanning, private class fields fix, and API domain wiring for Expo on Replit.
+- [Expo Replit QR + Hermes setup](expo-replit-setup.md) — QR scanning, Hermes private class fields fix, Metro API proxy for EXPO_PUBLIC_DOMAIN, artifact workflow constraints.

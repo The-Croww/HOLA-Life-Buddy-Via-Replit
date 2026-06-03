@@ -1,3 +1,4 @@
+const http = require("http");
 const path = require("path");
 const { getDefaultConfig } = require("expo/metro-config");
 
@@ -20,5 +21,38 @@ config.serializer.polyfillModuleNames = [
   ...(config.serializer.polyfillModuleNames || []),
   path.resolve(__dirname, "polyfills.js"),
 ];
+
+// Proxy /api and /socket.io requests from the Expo Metro server to the API
+// server on port 8080. This allows EXPO_PUBLIC_DOMAIN (the Expo dev domain)
+// to be used as the base URL for all API calls from the mobile app.
+config.server = config.server || {};
+config.server.enhanceMiddleware = (middleware) => {
+  return (req, res, next) => {
+    const url = req.url || "";
+    if (url.startsWith("/api") || url.startsWith("/socket.io")) {
+      const options = {
+        hostname: "localhost",
+        port: 8080,
+        path: url,
+        method: req.method,
+        headers: { ...req.headers, host: "localhost:8080" },
+      };
+      const proxy = http.request(options, (proxyRes) => {
+        res.writeHead(proxyRes.statusCode || 500, proxyRes.headers);
+        proxyRes.pipe(res, { end: true });
+      });
+      proxy.on("error", (err) => {
+        console.error("[Metro proxy error]", err.message);
+        if (!res.headersSent) {
+          res.writeHead(502);
+          res.end(JSON.stringify({ error: "API server unavailable" }));
+        }
+      });
+      req.pipe(proxy, { end: true });
+      return;
+    }
+    middleware(req, res, next);
+  };
+};
 
 module.exports = config;

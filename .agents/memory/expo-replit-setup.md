@@ -20,9 +20,33 @@ Note: port 23106 is NOT in the `configureWorkflow` supported ports list, so omit
 
 ## EXPO_PUBLIC_DOMAIN for API calls
 
-Set `EXPO_PUBLIC_DOMAIN=$REPLIT_DEV_DOMAIN` (not the expo domain). The Web Admin Vite server (port 5000) has a `/api` proxy to port 8080, so all API calls at `https://[REPLIT_DEV_DOMAIN]/api/v1/...` work correctly.
+The artifact system's mobile workflow (managed, cannot be reconfigured) sets `EXPO_PUBLIC_DOMAIN=$REPLIT_EXPO_DEV_DOMAIN`. This normally routes API calls to Metro (port 23106), not the API (port 8080).
 
-**Why:** The Expo dev domain proxies to Metro (port 23106), not the API (port 8080). Using `REPLIT_EXPO_DEV_DOMAIN` for `EXPO_PUBLIC_DOMAIN` would route API calls to the bundler, not the Express server.
+**Fix:** Add an `enhanceMiddleware` proxy in `metro.config.js` that intercepts any request starting with `/api` or `/socket.io` and forwards it to `localhost:8080`. This way the Expo dev domain works as the API base URL.
+
+```javascript
+const http = require("http");
+config.server = config.server || {};
+config.server.enhanceMiddleware = (middleware) => {
+  return (req, res, next) => {
+    const url = req.url || "";
+    if (url.startsWith("/api") || url.startsWith("/socket.io")) {
+      const proxy = http.request({ hostname: "localhost", port: 8080, path: url, method: req.method, headers: { ...req.headers, host: "localhost:8080" } }, (proxyRes) => {
+        res.writeHead(proxyRes.statusCode || 500, proxyRes.headers);
+        proxyRes.pipe(res, { end: true });
+      });
+      proxy.on("error", () => { if (!res.headersSent) { res.writeHead(502); res.end('{}'); } });
+      req.pipe(proxy, { end: true });
+      return;
+    }
+    middleware(req, res, next);
+  };
+};
+```
+
+**Why:** Artifact-managed workflows can't be reconfigured via `configureWorkflow` (throws PROHIBITED_ACTION). Creating a custom workflow to override conflicts with the artifact's workflow on port 23106.
+
+**Do NOT create a custom Mobile App workflow** — it will conflict with the artifact's expo workflow on port 23106. The artifact's workflow provides the canvas iframe; the Metro proxy handles API calls.
 
 ## Hermes private class fields crash
 

@@ -35,7 +35,7 @@ export function Messaging() {
 
   selectedRef.current = selected;
 
-  const baseUrl = `https://${import.meta.env.VITE_API_DOMAIN ?? window.location.host}`;
+  const baseUrl = ``;
 
   const fetchClients = () => {
     fetch(`${baseUrl}/api/v1/messages/clients`, {
@@ -81,7 +81,7 @@ export function Messaging() {
   useEffect(() => {
     if (!user?.id) return;
 
-    const socket = io(baseUrl, {
+    const socket = io(window.location.origin, {
       path: "/api/socket.io",
       query: { psychologistId: user.id },
       transports: ["websocket", "polling"],

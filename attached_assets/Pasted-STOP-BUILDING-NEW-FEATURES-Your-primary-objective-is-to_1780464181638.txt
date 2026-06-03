@@ -1,0 +1,259 @@
+STOP BUILDING NEW FEATURES.
+
+Your primary objective is to FIX and STABILIZE the existing prototype.
+
+CURRENT STATUS:
+The project is not functioning correctly.
+
+Problems:
+
+* The mobile application does not work properly on my device.
+* Expo Go is not loading correctly.
+* The artifact crashes.
+* User and Admin flows are not functioning consistently.
+* The system is unstable.
+
+IMPORTANT:
+
+This is NOT a production application.
+
+This is ONLY a DEMO / PROTOTYPE for presentations, walkthroughs, demonstrations, investor pitches, capstone reviews, and stakeholder presentations.
+
+I do NOT need production-level implementation.
+
+I need a fully working prototype that can be demonstrated without crashes.
+
+==================================================
+PRIORITY #1 — FIX ALL CRASHES
+=============================
+
+Act as a Senior Software Engineer.
+
+Before creating anything new:
+
+1. Find all runtime errors.
+2. Find all build errors.
+3. Find all TypeScript errors.
+4. Find all dependency issues.
+5. Find all routing issues.
+6. Find all Expo issues.
+7. Find all artifact issues.
+8. Find all rendering issues.
+
+Fix every issue first.
+
+Do not continue until:
+
+* No crashes remain.
+* No blank screens remain.
+* No loading failures remain.
+* No artifact failures remain.
+
+==================================================
+PRIORITY #2 — CREATE TWO WORKING PREVIEWS
+=========================================
+
+I need TWO SEPARATE WORKING EXPERIENCES.
+
+Preview 1:
+ADMIN WEB PORTAL
+
+Accessible through:
+
+* Browser Preview
+* /admin route
+
+Preview 2:
+USER MOBILE APP
+
+Accessible through:
+
+* Expo Go
+* Mobile Preview
+
+Both previews must work independently.
+
+==================================================
+PRIORITY #3 — PROTOTYPE MODE
+============================
+
+Since this is a prototype:
+
+DO NOT focus on:
+
+* Production APIs
+* Complex backend logic
+* Enterprise architecture
+* Real authentication providers
+* Production security
+
+Instead:
+
+Use mock data where needed.
+
+Create stable demo flows.
+
+The goal is:
+
+Every screen works.
+
+Every walkthrough works.
+
+Every button demonstrates functionality.
+
+Everything looks real.
+
+Nothing crashes.
+
+==================================================
+PRIORITY #4 — USER APP WALKTHROUGH
+==================================
+
+Implement the complete patient walkthrough.
+
+User should be able to:
+
+1. Open onboarding
+2. Register
+3. Login
+4. Open Home
+5. Log Mood
+6. Create Journal
+7. Chat with HOLA Buddy
+8. Open Messages
+9. Open Profile
+
+All screens must function.
+
+If backend functionality is missing:
+
+Use realistic prototype data.
+
+Never leave screens broken.
+
+==================================================
+PRIORITY #5 — ADMIN PORTAL WALKTHROUGH
+======================================
+
+Implement the complete clinician walkthrough.
+
+Admin should be able to:
+
+1. Login
+2. View Dashboard
+3. View Client Profiles
+4. Open Mood Charts
+5. Read Journal Entries
+6. Generate AI Summary
+7. Add Session Notes
+8. Assign Goals
+9. Assign Tasks
+10. View Messages
+11. View Appointments
+12. View Analytics
+13. View Risk Alerts
+
+If backend data is unavailable:
+
+Generate realistic demo data.
+
+Never leave empty screens.
+
+==================================================
+PRIORITY #6 — ADMIN LOGIN IN MOBILE APP
+=======================================
+
+The mobile app must support BOTH account types.
+
+Patient:
+[alex@example.com](mailto:alex@example.com)
+password123
+
+Psychologist:
+[doctor@example.com](mailto:doctor@example.com)
+doctor123
+
+If Psychologist logs into the mobile app:
+
+Show Psychologist mobile experience.
+
+If Patient logs in:
+
+Show Patient experience.
+
+Role switching must work correctly.
+
+==================================================
+PRIORITY #7 — COSMOS-STYLE REDESIGN
+===================================
+
+After stability is achieved:
+
+Redesign the entire interface.
+
+Style:
+
+* Modern Editorial Minimalism
+* Premium SaaS
+* Cosmos.so inspired
+* Large whitespace
+* Inter typography
+* Soft rounded corners
+* Elegant cards
+* Clean dashboards
+* Professional layouts
+
+Apply consistently to:
+
+* User Mobile App
+* Admin Mobile Experience
+* Admin Web Portal
+
+==================================================
+PRIORITY #8 — FULL QA REVIEW
+============================
+
+After all fixes:
+
+Perform a complete audit.
+
+Test every:
+
+* Screen
+* Button
+* Route
+* Modal
+* Form
+* Navigation flow
+* Login flow
+* Dashboard
+* Message flow
+
+Fix every bug discovered.
+
+==================================================
+FINAL REQUIREMENT
+=================
+
+Do not stop after making changes.
+
+Continue reviewing, testing, and fixing until:
+
+✓ Admin Web Preview works
+✓ User Mobile Preview works
+✓ Admin Mobile Login works
+✓ Expo Go works
+✓ Artifact works
+✓ Walkthrough works end-to-end
+✓ No critical crashes remain
+✓ No blank screens remain
+
+At completion provide:
+
+1. Bugs found
+2. Bugs fixed
+3. Files modified
+4. Remaining issues
+5. Confirmation that both previews are working
+
+Think and work like a Senior Software Engineer performing a rescue and stabilization project on a broken prototype.

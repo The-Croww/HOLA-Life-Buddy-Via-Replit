@@ -211,6 +211,65 @@ function seedData(db: Database.Database): void {
   journalInsert.run("j1", SEED_USER_ID, "Starting fresh", "Tried the 4-7-8 breathing Dr. Rivera recommended. It actually helped me fall asleep faster.", "calm", 1, new Date(now - 3 * dayMs).toISOString());
   journalInsert.run("j2", SEED_USER_ID, "Rough afternoon", "Couldn't focus at all today. My mind kept jumping between different worries.", "anxious", 1, new Date(now - 2 * dayMs).toISOString());
   journalInsert.run("j3", SEED_USER_ID, "Personal note", "Some things I need to work through on my own first. Not ready to share yet.", "sad", 0, new Date(now - dayMs).toISOString());
+
+  // Seed additional tasks
+  db.prepare(
+    "INSERT OR IGNORE INTO tasks (id, user_id, psychologist_id, title, description, due_date, completed_at, created_at) VALUES (?,?,?,?,?,?,?,?)"
+  ).run("task-seed-002", SEED_USER_ID, SEED_PSYCH_ID, "Gratitude journal — 3 items daily",
+    "Write 3 things you are grateful for each morning before checking your phone. Helps rewire morning anxiety patterns.",
+    new Date(now + 5 * dayMs).toISOString(), null, new Date(now - dayMs).toISOString());
+  db.prepare(
+    "INSERT OR IGNORE INTO tasks (id, user_id, psychologist_id, title, description, due_date, completed_at, created_at) VALUES (?,?,?,?,?,?,?,?)"
+  ).run("task-seed-003", SEED_USER_ID, SEED_PSYCH_ID, "10-min mindfulness session",
+    "Use the HOLA! Breathe feature for a guided 10-minute mindfulness session. Do this before bed.",
+    new Date(now + 3 * dayMs).toISOString(), null, new Date(now - dayMs).toISOString());
+
+  // Seed session notes
+  const noteInsert = db.prepare(
+    "INSERT OR IGNORE INTO notes (id, client_id, psychologist_id, template, title, content, created_at) VALUES (?,?,?,?,?,?,?)"
+  );
+  noteInsert.run("note-seed-001", SEED_USER_ID, SEED_PSYCH_ID, "free", "Session #4 – Anxiety & Sleep",
+    JSON.stringify({ text: "Client reported significant improvement in sleep quality after implementing 4-7-8 breathing. Mood scores trending upward from 5 to 7 over the past week. Discussed cognitive reframing techniques for work-related anxiety. Assigned journaling homework for intrusive thoughts." }),
+    new Date(now - 2 * dayMs).toISOString());
+  noteInsert.run("note-seed-002", SEED_USER_ID, SEED_PSYCH_ID, "free", "Session #3 – Mood Tracker Review",
+    JSON.stringify({ text: "Reviewed 2-week mood chart. Identified Tuesday/Wednesday as consistently lower mood days — correlates with client work schedule. Introduced PMR (Progressive Muscle Relaxation). Client engaged and motivated. Continue weekly sessions." }),
+    new Date(now - 9 * dayMs).toISOString());
+
+  // Seed goals
+  const goalInsert = db.prepare(
+    "INSERT OR IGNORE INTO goals (id, client_id, psychologist_id, title, description, target_date, status, created_at, achieved_at) VALUES (?,?,?,?,?,?,?,?,?)"
+  );
+  goalInsert.run("goal-seed-001", SEED_USER_ID, SEED_PSYCH_ID, "Daily mood check-in streak",
+    "Log mood every day for 14 consecutive days to build self-awareness and routine.",
+    new Date(now + 14 * dayMs).toISOString(), "active", new Date(now - 3 * dayMs).toISOString(), null);
+  goalInsert.run("goal-seed-002", SEED_USER_ID, SEED_PSYCH_ID, "Reduce anxiety score below 4",
+    "Practice breathing exercises and journaling daily. Target: anxiety reported <4 in mood check-ins.",
+    new Date(now + 21 * dayMs).toISOString(), "active", new Date(now - 3 * dayMs).toISOString(), null);
+
+  // Seed appointments
+  const apptInsert = db.prepare(
+    "INSERT OR IGNORE INTO appointments (id, psychologist_id, client_id, client_name, session_type, date_time, notes, created_at) VALUES (?,?,?,?,?,?,?,?)"
+  );
+  apptInsert.run("appt-seed-001", SEED_PSYCH_ID, SEED_USER_ID, "Alex", "followup",
+    new Date(now + dayMs).toISOString(),
+    "Review mood patterns and discuss breathing exercises", new Date(now - dayMs).toISOString());
+  apptInsert.run("appt-seed-002", SEED_PSYCH_ID, SEED_USER_ID, "Alex", "initial",
+    new Date(now + 7 * dayMs).toISOString(),
+    "Monthly progress review", new Date(now - dayMs).toISOString());
+
+  // Seed direct messages
+  const msgInsert = db.prepare(
+    "INSERT OR IGNORE INTO messages (id, sender_id, sender_role, recipient_id, content, read, created_at) VALUES (?,?,?,?,?,?,?)"
+  );
+  msgInsert.run("msg-seed-001", SEED_PSYCH_ID, "psychologist", SEED_USER_ID,
+    "Hi Alex! Just checking in after our last session. How are the breathing exercises going?",
+    1, new Date(now - 2 * dayMs).toISOString());
+  msgInsert.run("msg-seed-002", SEED_USER_ID, "user", SEED_PSYCH_ID,
+    "Hi Dr. Rivera! They are really helping. I managed to sleep before midnight 3 nights in a row 😊",
+    1, new Date(now - 2 * dayMs + 3600000).toISOString());
+  msgInsert.run("msg-seed-003", SEED_PSYCH_ID, "psychologist", SEED_USER_ID,
+    "That is wonderful progress! Keep it up. See you at our session tomorrow at 10am.",
+    1, new Date(now - 2 * dayMs + 7200000).toISOString());
 }
 
 // ── Type Helpers ──────────────────────────────────────────────────────────

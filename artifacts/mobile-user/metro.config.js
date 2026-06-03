@@ -1,3 +1,4 @@
+const path = require("path");
 const { getDefaultConfig } = require("expo/metro-config");
 
 const config = getDefaultConfig(__dirname);
@@ -10,5 +11,14 @@ const defaultIgnore =
 
 config.transformer = config.transformer || {};
 config.transformer.transformIgnorePatterns = [defaultIgnore];
+
+// Inject DOMException polyfill before any module loads.
+// expo/virtual/streams.js (web-streams-polyfill v4) references DOMException at
+// module load time, and Hermes in Expo Go doesn't expose it globally.
+config.serializer = config.serializer || {};
+config.serializer.polyfillModuleNames = [
+  ...(config.serializer.polyfillModuleNames || []),
+  path.resolve(__dirname, "polyfills.js"),
+];
 
 module.exports = config;

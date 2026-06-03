@@ -96,3 +96,6 @@ externalPort = 3000
 
 [userenv.shared]
 NODE_ENV = "development"
+
+[nix]
+channel = "stable-25_05"

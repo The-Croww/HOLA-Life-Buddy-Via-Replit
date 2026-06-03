@@ -2,7 +2,17 @@ const http = require("http");
 const path = require("path");
 const { getDefaultConfig } = require("expo/metro-config");
 
+const workspaceRoot = path.resolve(__dirname, "../..");
 const config = getDefaultConfig(__dirname);
+
+// pnpm uses symlinks into node_modules/.pnpm — Metro must watch the
+// workspace root so it can resolve those symlinks correctly.
+config.watchFolders = [workspaceRoot];
+config.resolver = config.resolver || {};
+config.resolver.nodeModulesPaths = [
+  path.resolve(__dirname, "node_modules"),
+  path.resolve(workspaceRoot, "node_modules"),
+];
 
 // react-native-worklets ships private class fields (#field syntax) in its compiled
 // module output. Hermes in Expo Go doesn't support this unless we run the package

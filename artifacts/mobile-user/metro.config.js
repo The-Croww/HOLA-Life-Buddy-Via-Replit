@@ -6,8 +6,12 @@ const workspaceRoot = path.resolve(__dirname, "../..");
 const config = getDefaultConfig(__dirname);
 
 // pnpm uses symlinks into node_modules/.pnpm — Metro must watch the
-// workspace root so it can resolve those symlinks correctly.
-config.watchFolders = [workspaceRoot];
+// pnpm store and lib packages, but NOT the full workspace root (temp files
+// in .local/ can be deleted mid-session and crash Metro's watcher).
+config.watchFolders = [
+  path.resolve(workspaceRoot, "node_modules"),
+  path.resolve(workspaceRoot, "lib"),
+];
 config.resolver = config.resolver || {};
 config.resolver.nodeModulesPaths = [
   path.resolve(__dirname, "node_modules"),

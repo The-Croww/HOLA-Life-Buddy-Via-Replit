@@ -16,6 +16,7 @@ import { Feather } from "@expo/vector-icons";
 import { useColors } from "@/hooks/useColors";
 import { WorryBoxModal, GratitudeJarModal, ThoughtReframeModal, GroundingModal } from "@/components/cbt/CBTTools";
 import { useAchievements } from "@/hooks/useAchievements";
+import { BuddyFAB } from "@/components/BuddyFAB";
 const Audio = {
   setAudioModeAsync: async (_opts: object) => {},
   Sound: {
@@ -863,6 +864,7 @@ export default function MindfulnessScreen() {
         setShowGrounding(false);
         increment("breathing_sessions", [{ count: 5, achievementId: "mindful" }]);
       }} />
+      <BuddyFAB bottomOffset={Platform.OS === "web" ? 100 : 80} />
     </View>
   );
 }

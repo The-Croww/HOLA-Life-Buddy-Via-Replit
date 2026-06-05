@@ -22,6 +22,7 @@ import {
   getGetTodayMoodQueryKey,
 } from "@workspace/api-client-react";
 import { WeeklyMoodChart } from "@/components/WeeklyMoodChart";
+import { BuddyFAB } from "@/components/BuddyFAB";
 
 const MOOD_EMOJIS: Record<number, string> = {
   1: "😩",
@@ -274,6 +275,7 @@ export default function MoodTrackerScreen() {
   });
 
   return (
+    <>
     <ScrollView
       style={{ flex: 1, backgroundColor: colors.background }}
       contentContainerStyle={[
@@ -798,6 +800,8 @@ export default function MoodTrackerScreen() {
         </>
       )}
     </ScrollView>
+    <BuddyFAB bottomOffset={Platform.OS === "web" ? 100 : 80} />
+    </>
   );
 }
 

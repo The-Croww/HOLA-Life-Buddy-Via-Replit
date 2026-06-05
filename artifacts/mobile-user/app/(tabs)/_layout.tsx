@@ -88,16 +88,7 @@ export default function TabLayout() {
         name="chat"
         options={{
           title: "Buddy",
-          tabBarIcon: ({ color }) =>
-            isIOS ? (
-              <SymbolView
-                name="bubble.left.and.bubble.right"
-                tintColor={color}
-                size={24}
-              />
-            ) : (
-              <Feather name="message-circle" size={22} color={color} />
-            ),
+          href: null,
         }}
       />
       <Tabs.Screen

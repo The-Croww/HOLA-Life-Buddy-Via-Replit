@@ -24,6 +24,7 @@ import {
 } from "@workspace/api-client-react";
 import { useQueryClient, useQuery } from "@tanstack/react-query";
 import { CustomDrawer } from "@/components/CustomDrawer";
+import { BuddyFAB } from "@/components/BuddyFAB";
 import { useStreak } from "@/hooks/useStreak";
 import { useAchievements } from "@/hooks/useAchievements";
 
@@ -38,7 +39,7 @@ const QUICK_MOOD = [
 const QUICK_ACTIONS = [
   { label: "Journal", icon: "book-open" as const, color: "#6366f1", route: "/(tabs)/journal" as const },
   { label: "Breathe", icon: "wind" as const, color: "#3DD68C", route: "/(tabs)/mindfulness" as const, tab: "breathe" },
-  { label: "Chat", icon: "message-circle" as const, color: "#E1306C", route: "/(tabs)/chat" as const },
+  { label: "Meditate", icon: "wind" as const, color: "#5B9CF6", route: "/(tabs)/mindfulness" as const, tab: "meditate" },
   { label: "Progress", icon: "award" as const, color: "#F59E0B", route: "/achievements" as const },
 ];
 
@@ -548,6 +549,8 @@ export default function HomeScreen() {
           </View>
         </View>
       </ScrollView>
+
+      <BuddyFAB bottomOffset={Platform.OS === "web" ? 100 : 80} />
     </>
   );
 }

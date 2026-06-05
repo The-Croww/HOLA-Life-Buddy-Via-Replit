@@ -2,6 +2,7 @@ import React, { useState, useRef, useCallback, useEffect } from "react";
 import {
   View,
   Text,
+  Image,
   TextInput,
   TouchableOpacity,
   FlatList,
@@ -13,6 +14,8 @@ import {
   Animated,
   Modal,
 } from "react-native";
+
+const BUDDY_FACE = require("../assets/buddy-face.jpg");
 import { Feather } from "@expo/vector-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useColors } from "@/hooks/useColors";
@@ -189,9 +192,7 @@ function BuddyChat({ onClose }: { onClose: () => void }) {
         ]}
       >
         <View style={chatStyles.headerRow}>
-          <View style={[chatStyles.avatar, { backgroundColor: "#3DD68C" }]}>
-            <Text style={chatStyles.avatarText}>🌿</Text>
-          </View>
+          <Image source={BUDDY_FACE} style={chatStyles.avatarImage} resizeMode="cover" />
           <View style={{ flex: 1 }}>
             <Text style={[chatStyles.headerName, { color: colors.foreground }]}>
               HOLA Buddy
@@ -369,10 +370,10 @@ export function BuddyFAB({ bottomOffset = 80 }: BuddyFABProps) {
       >
         <TouchableOpacity
           onPress={handlePress}
-          activeOpacity={1}
+          activeOpacity={0.85}
           style={fabStyles.fabTouch}
         >
-          <Text style={fabStyles.fabEmoji}>🌿</Text>
+          <Image source={BUDDY_FACE} style={fabStyles.fabImage} resizeMode="cover" />
         </TouchableOpacity>
       </Animated.View>
     </>
@@ -383,25 +384,29 @@ const fabStyles = StyleSheet.create({
   fab: {
     position: "absolute",
     right: 20,
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    backgroundColor: "#3DD68C",
-    shadowColor: "#3DD68C",
+    width: 58,
+    height: 58,
+    borderRadius: 29,
+    backgroundColor: "#fff",
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.4,
+    shadowOpacity: 0.22,
     shadowRadius: 10,
     elevation: 8,
     zIndex: 999,
+    overflow: "hidden",
   },
   fabTouch: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    alignItems: "center",
-    justifyContent: "center",
+    width: 58,
+    height: 58,
+    borderRadius: 29,
+    overflow: "hidden",
   },
-  fabEmoji: { fontSize: 24 },
+  fabImage: {
+    width: 58,
+    height: 58,
+    borderRadius: 29,
+  },
 });
 
 const chatStyles = StyleSheet.create({
@@ -416,14 +421,11 @@ const chatStyles = StyleSheet.create({
     alignItems: "center",
     gap: 12,
   },
-  avatar: {
+  avatarImage: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    alignItems: "center",
-    justifyContent: "center",
   },
-  avatarText: { fontSize: 18 },
   headerName: { fontSize: 15, fontFamily: "Inter_600SemiBold" },
   onlineRow: { flexDirection: "row", alignItems: "center", gap: 5, marginTop: 2 },
   onlineDot: { width: 6, height: 6, borderRadius: 3 },
